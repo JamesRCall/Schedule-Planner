@@ -9,7 +9,7 @@ using namespace std;
 void Advanced_Clubs(short int Clubs)
 {
 
-    cout << "advanced clubs WIP..." << endl;
+    cout << "advanced clubs WIP..." << endl; // lets me know code is succesfully reaching this function
 }
 /* Objectives:
     1. allow extra customization for clubs

@@ -9,7 +9,7 @@ using namespace std;
 void Advanced_Other(short int Other)
 {
 
-    cout << "advanced Other WIP..." << endl;
+    cout << "advanced Other WIP..." << endl; // lets me know code is succesfully reaching this function
 }
 /* Objectives:
     1. allow user to enter own events

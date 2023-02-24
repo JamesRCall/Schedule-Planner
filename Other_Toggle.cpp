@@ -3,8 +3,11 @@
 // File: Other_Toggle.cpp
 // Purpose: functions for assigning values of each event/club/class.
 
+#ifndef Other_Toggle_H
+#define Other_Toggle_H
+
 #include <iostream>
-#include <C:\Users\James\Documents\programs\Advanced_Mode.cpp> // TODO: change from local to general location
+#include <Schedule_Header.h> // TODO: change from local to general location
 
 using namespace std;
 // function checking if any other events and for assigning other amount
@@ -51,3 +54,4 @@ void Class_Amt(short int& Classes){
     cout << "Great! Can I ask you more about your classes? (y/n)" << endl;
     Advanced_Mode(Classes, 'a'); // toggles advanced mode for classes
 }
+#endif

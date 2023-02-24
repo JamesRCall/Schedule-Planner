@@ -4,11 +4,7 @@
 // Purpose: toggles advanced settings for each event
 
 #include <iostream>
-#include <C:\Users\James\Documents\programs\check.cpp>
-#include <C:\Users\James\Documents\programs\Advanced_Classes.cpp>
-#include <C:\Users\James\Documents\programs\Advanced_Clubs.cpp>
-#include <C:\Users\James\Documents\programs\Advanced_Other.cpp>
-// TODO: change from local to general location
+#include <Schedule_Header.h>
 using namespace std;
 
 // function for enabling advanced mode

@@ -16,10 +16,11 @@ int main()
     bool Other_Enabled, toggle_fix; 
     // Other_Enabled: whether or not user has other events, used to unlock certain messages.
     // toggle_fix: whether or not user wants to change amount of classes, clubs, events.
-    short int Classes, Clubs, Other, redo; 
+    int Classes, Clubs, Other, redo; 
     // Classes: amount of classes user has.
     // Clubs: amount of clubs user has.
     // Other: amount of events user has.
+    // this is where event will be stored
 
     cout << "Hello welcome to your schedule planner" << endl;
     cout << "Let's start out with a few questions" << endl;
@@ -69,11 +70,40 @@ int main()
     }while(toggle_fix == 1);
     // loops until no incorrect inputs
     cout << "All done! time to make your schedule..." << endl;
+    Event Class_event[Classes];
+    Event Club_event[Clubs];
+    Event Other_event[Other];
+    // different set list for each depending on type, not finished but trust me it's gunna be good.
+
+    for (int i = 0; i < Classes; i++) {
+            cout << "Enter event times for Class " << i << ":" << endl;
+            Get_Time(Class_event[i], CLASS);
+    }
+    
+    for (int i = 0; i < Clubs; i++) {
+            cout << "Enter event times for Club " << i << ":" << endl;
+            Get_Time(Club_event[i], CLUB);
+    }
+
+    for (int i = 0; i < Other; i++) {
+            cout << "Enter event times for Club " << i << ":" << endl;
+            Get_Time(Club_event[i], OTHER);
+    }
+    // ask for and stores the time of every event (will explain in depth later it's 2am...)
+    // fun fact the code won't run this segment rn so uh... yeah.
+
+    // TODO: 
+    // make for loops into a function
+    // possibly redefine variables as they are very original and already confusing kek lmao
+
+
+
 /*
----------------------------------------TODO--------------------------------------
+---------------------------------------WIP--------------------------------------
 1. ask user for times of each class and frequency
 2. ask user for times of each club and frequency
 3. if user has events ask for times of each and frequency
+---------------------------------------TODO--------------------------------------
 4. ask user what time they sleep and wake up
 5. ask user what times they eat
 6. find what time periods are left

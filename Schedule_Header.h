@@ -3,13 +3,34 @@
 
 #include <iostream>
 
+// new event structure, stores time of each event, will have it assign type of event later
+struct Event {
+        char type_event;
+        int start_hour;
+        int start_minute;
+        int end_hour;
+        int end_minute;
+    };
+
+// this checks what type of event it is, I need to go back and use this for my previous code
+enum EventType {CLASS, CLUB, OTHER};
+// TODO: fix previous code to use these variables
+
+// error check
 int YesOrNo(char val);
-void Other_Toggle(short int& Other, bool& Other_Enabled);
-void Club_Amt(short int& Clubs);
-void Class_Amt(short int& Classes);
-void Advanced_Mode(short int amt, char type);
-void Advanced_Classes(short int Class);
-void Advanced_Clubs(short int Clubs);
-void Advanced_Other(short int Other);
+
+// choosing event stuff
+void Other_Toggle(int& Other, bool& Other_Enabled);
+void Club_Amt(int& Clubs);
+void Class_Amt(int& Classes);
+
+// advanced stuff
+void Advanced_Mode(int amt, char type);
+void Advanced_Classes(int Class);
+void Advanced_Clubs(int Clubs);
+void Advanced_Other(int Other);
+
+// time stuff
+void Get_Time(Event& revent, EventType event_type);
 
 #endif

@@ -8,7 +8,7 @@
 using namespace std;
 
 // function for enabling advanced mode
-void Advanced_Mode(short int amt, char type)
+void Advanced_Mode(int amt, char type)
 {
     char toggle;
 
@@ -33,3 +33,4 @@ void Advanced_Mode(short int amt, char type)
     }
     
 }
+// changed stuff

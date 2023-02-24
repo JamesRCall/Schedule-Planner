@@ -25,10 +25,10 @@ void Club_Amt(int& Clubs);
 void Class_Amt(int& Classes);
 
 // advanced stuff
-void Advanced_Mode(int amt, char type);
-void Advanced_Classes(int Class);
-void Advanced_Clubs(int Clubs);
-void Advanced_Other(int Other);
+void Advanced_Mode(int amt, EventType event_type);
+void Advanced_Classes(int& Class);
+void Advanced_Clubs(int& Clubs);
+void Advanced_Other(int& Other);
 
 // time stuff
 void Get_Time(Event& revent, EventType event_type);

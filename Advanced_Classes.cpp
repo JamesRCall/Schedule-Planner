@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-void Advanced_Classes(short int Class)
+void Advanced_Classes(int& Class)
 {
 
     cout << "advanced classes WIP..." << endl; // lets me know code is succesfully reaching this function

@@ -8,19 +8,19 @@
 using namespace std;
 
 // function for enabling advanced mode
-void Advanced_Mode(int amt, char type)
+void Advanced_Mode(int amt, EventType event_type)
 {
     char toggle;
 
     if(YesOrNo(toggle) == 1){ // activates if user says yes to advanced mode
-        switch(type){
-            case 'a': // class option            
+        switch(event_type){
+            case CLASS: // class option            
                 Advanced_Classes(amt);
                 break;
-            case 'b': // club option
+            case CLUB: // club option
                 Advanced_Clubs(amt);
                 break;
-            case 'c': // other option
+            case OTHER: // other option
                 Advanced_Other(amt);
                 break;
             default:

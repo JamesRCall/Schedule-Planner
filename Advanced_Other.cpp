@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-void Advanced_Other(int Other)
+void Advanced_Other(int& Other)
 {
 
     cout << "advanced Other WIP..." << endl; // lets me know code is succesfully reaching this function

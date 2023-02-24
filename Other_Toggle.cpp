@@ -34,7 +34,7 @@ void Other_Toggle(int& Other, bool& Other_Enabled){
             cout << "amount of events: "; // just here for clarification
             cin >> Other; // assigns value
             cout << "Almost done! Can I ask you more about your other events?" << endl;
-            Advanced_Mode(Other, 'c'); // toggles advanced mode for events
+            Advanced_Mode(Other, OTHER); // toggles advanced mode for events
     }
 }
 // function for assigning club amount
@@ -42,13 +42,13 @@ void Club_Amt(int& Clubs){
     cout << "Amount of clubs: " << endl;
     cin >> Clubs;
     cout << "Awesome! Can I ask you more about your clubs? (y/n)" << endl;
-    Advanced_Mode(Clubs, 'b'); // toggles advanced mode for clubs
+    Advanced_Mode(Clubs, CLUB); // toggles advanced mode for clubs
 }
 // function for assigning class amount
 void Class_Amt(int& Classes){
     cout << "Amount of Classes: " << endl;
     cin >> Classes;
     cout << "Great! Can I ask you more about your classes? (y/n)" << endl;
-    Advanced_Mode(Classes, 'a'); // toggles advanced mode for classes
+    Advanced_Mode(Classes, CLASS); // toggles advanced mode for classes
 }
 // editor note: I changed stuff in here but forgot what

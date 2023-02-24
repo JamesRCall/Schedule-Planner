@@ -4,7 +4,7 @@
 // Purpose: functions for assigning values of each event/club/class.
 
 #include <iostream>
-#include <Schedule_Header.h> // TODO: change from local to general location
+#include "Schedule_Header.h" // TODO: change from local to general location
 
 using namespace std;
 // function checking if any other events and for assigning other amount

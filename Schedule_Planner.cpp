@@ -87,7 +87,7 @@ int main()
 
     for (int i = 0; i < Other; i++) {
             cout << "Enter event times for Club " << i << ":" << endl;
-            Get_Time(Club_event[i], OTHER);
+            Get_Time(Other_event[i], OTHER);
     }
     // ask for and stores the time of every event (will explain in depth later it's 2am...)
     // fun fact the code won't run this segment rn so uh... yeah.

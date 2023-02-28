@@ -11,7 +11,7 @@ using namespace std;
 void Advanced_Mode(int amt, EventType event_type)
 {
     char toggle;
-
+    cin >> toggle;
     if(YesOrNo(toggle) == 1){ // activates if user says yes to advanced mode
         switch(event_type){
             case CLASS: // class option            

@@ -8,22 +8,16 @@ using namespace std;
 
 int YesOrNo(char val)
 {
-    bool Error;
-    do{
-        cin >> val;
-        switch(val){
-            case 'y':
-                Error = 0;
-                return 1; // if yes returns true and no errors
-
-            case 'n':
-                Error = 0;
-                return 0; // if no returns false and no errors
-
-            default:
-                cout << "Error, Try again" << endl; // lets me know if error is happening here
-                Error = 1; // anything else will not return and says error
-        }
-    }while(Error = 1);
+    switch(val){
+        case 'y':
+            return 1; // if yes returns true and no errors
+        case 'n':
+            return 0; // if no returns false and no errors
+        default:
+            cout << "Error, Try again" << endl; // lets me know if error is happening here
+            char new_val;
+            cin >> new_val;
+            YesOrNo(new_val);
+    }
     return 0;
 }

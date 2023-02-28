@@ -4,8 +4,9 @@
 // Purpose: plans your day
 
 #include <iostream>
+#include "Schedule_Header.h"
 #include <string>
-#include "Schedule_Header.h" //TODO: get this stupid error to go away pls :(
+
 
 using namespace std;
 
@@ -16,11 +17,15 @@ int main()
     bool Other_Enabled, toggle_fix; 
     // Other_Enabled: whether or not user has other events, used to unlock certain messages.
     // toggle_fix: whether or not user wants to change amount of classes, clubs, events.
-    int Classes, Clubs, Other, redo; 
+    int Classes, Clubs, Other, redoit; 
     // Classes: amount of classes user has.
     // Clubs: amount of clubs user has.
     // Other: amount of events user has.
     // this is where event will be stored
+    Classes = 0;
+    Clubs = 0;
+    Other = 0;
+    Other_Enabled = false;
 
     cout << "Hello welcome to your schedule planner" << endl;
     cout << "Let's start out with a few questions" << endl;
@@ -44,11 +49,13 @@ int main()
         }
         // checks if user has events and if so list them.
         cout << "Is this correct? (y/n)" << endl;  
+        cin >> check;
         if (YesOrNo(check) == 0){
         // checks if user wants any values to be changed
             toggle_fix = 1;
             cout << "which is incorrect? (1 = classes, 2 = clubs, 3 = other)" << endl;
-            switch(redo){
+            cin >> redoit;
+            switch(redoit){
                 case 1:
                     Class_Amt(Classes);
                     break;
@@ -70,9 +77,9 @@ int main()
     }while(toggle_fix == 1);
     // loops until no incorrect inputs
     cout << "All done! time to make your schedule..." << endl;
-    Event Class_event[Classes];
-    Event Club_event[Clubs];
-    Event Other_event[Other];
+    Event Class_event[1];
+    Event Club_event[2];
+    Event Other_event[3];
     // different set list for each depending on type, not finished but trust me it's gunna be good.
 
     for (int i = 0; i < Classes; i++) {

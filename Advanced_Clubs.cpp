@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-void Advanced_Clubs(int& Clubs)
+void Advanced_Clubs(int Clubs)
 {
 
     cout << "advanced clubs WIP..." << endl; // lets me know code is succesfully reaching this function

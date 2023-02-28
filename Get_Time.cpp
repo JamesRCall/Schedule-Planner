@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void Get_Time(Event& revent, EventType event_type) {
+void Get_Time(Event revent, EventType event_type) {
     switch (event_type) {
         case CLASS:
             cout << "Enter class start time (hour minute): ";

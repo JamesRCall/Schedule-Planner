@@ -15,4 +15,4 @@ void Advanced_Other(int Other)
     1. allow user to enter own events
     2. modify values of Mon, Tue, Wed, Thu, Fri, Sat, Sun
     3. enable more customization????
-*/  
+*/

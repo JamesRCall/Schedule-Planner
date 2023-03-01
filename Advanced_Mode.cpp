@@ -14,7 +14,7 @@ void Advanced_Mode(int amt, EventType event_type)
     cin >> toggle;
     if(YesOrNo(toggle) == 1){ // activates if user says yes to advanced mode
         switch(event_type){
-            case CLASS: // class option            
+            case CLASS: // class option
                 Advanced_Classes(amt);
                 break;
             case CLUB: // club option
@@ -31,6 +31,6 @@ void Advanced_Mode(int amt, EventType event_type)
     else{
         cout << "advanced off" << endl; // lets me know if error is happening here
     }
-    
+
 }
 // changed stuff

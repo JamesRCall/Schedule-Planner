@@ -12,12 +12,12 @@ using namespace std;
 
 int main()
 {
-    char check; 
+    char check;
     // check: users input (y/n) for if all classes, clubs, events are correct.
-    bool Other_Enabled, toggle_fix; 
+    bool Other_Enabled, toggle_fix;
     // Other_Enabled: whether or not user has other events, used to unlock certain messages.
     // toggle_fix: whether or not user wants to change amount of classes, clubs, events.
-    int Classes, Clubs, Other, redoit; 
+    int Classes, Clubs, Other, redoit;
     // Classes: amount of classes user has.
     // Clubs: amount of clubs user has.
     // Other: amount of events user has.
@@ -48,7 +48,7 @@ int main()
             cout << "you are in " << Other << " events." << endl;
         }
         // checks if user has events and if so list them.
-        cout << "Is this correct? (y/n)" << endl;  
+        cout << "Is this correct? (y/n)" << endl;
         cin >> check;
         if (YesOrNo(check) == 0){
         // checks if user wants any values to be changed
@@ -86,7 +86,7 @@ int main()
             cout << "Enter event times for Class " << i << ":" << endl;
             Get_Time(Class_event[i], CLASS);
     }
-    
+
     for (int i = 0; i < Clubs; i++) {
             cout << "Enter event times for Club " << i << ":" << endl;
             Get_Time(Club_event[i], CLUB);
@@ -99,7 +99,7 @@ int main()
     // ask for and stores the time of every event (will explain in depth later it's 2am...)
     // fun fact the code won't run this segment rn so uh... yeah.
 
-    // TODO: 
+    // TODO:
     // make for loops into a function
     // possibly redefine variables as they are very original and already confusing kek lmao
 

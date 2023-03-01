@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int main()
+int tmain()
 {
     char check;
     // check: users input (y/n) for if all classes, clubs, events are correct.

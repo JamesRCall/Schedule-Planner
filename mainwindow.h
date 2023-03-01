@@ -2,6 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,5 +21,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    // Private slots for button clicks
+    void startPlanning();
 };
+
 #endif // MAINWINDOW_H

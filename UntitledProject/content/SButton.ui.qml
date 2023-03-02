@@ -13,7 +13,7 @@ Button {
     id: control
     width: 300
     height: 100
-    text: "My Button"
+    text: qsTr("My Button")
     property alias controlText: control.text
 
     implicitWidth: Math.max(
@@ -32,21 +32,19 @@ Button {
         implicitHeight: 40
         opacity: enabled ? 1 : 0.3
         visible: true
-        radius: 25
+        radius: 7
         border.color: "#09784a4a"
         gradient: Gradient {
+            orientation: Gradient.Vertical
             GradientStop {
-                id: gradientStop
-                position: 0
-                color: "#5b5b5b"
+                position: 1
+                color: "#1a1a1a"
             }
 
             GradientStop {
-                id: gradientStop1
-                position: 0.96804
-                color: "#1a1a1a"
+                position: 0
+                color: "#1f1f1f"
             }
-            orientation: Gradient.Vertical
         }
         smooth: true
     }
@@ -65,9 +63,9 @@ Button {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.NoWrap
-        font.pointSize: 25
+        font.pointSize: 35
         font.styleName: "Bold"
-        font.family: "Tahoma"
+        font.family: "Ubuntu Condensed"
     }
 
     states: [
@@ -85,10 +83,6 @@ Button {
                 target: textItem
                 color: "#9dede9"
             }
-
-            PropertyChanges {
-                target: gradientStop
-            }
         },
         State {
             name: "down"
@@ -105,32 +99,10 @@ Button {
                 border.color: "#00000000"
                 border.width: 0
             }
-
-            PropertyChanges {
-                target: gradientStop
-                position: 0
-                color: "#464646"
-            }
-
-            PropertyChanges {
-                target: gradientStop1
-                position: 1
-                color: "#101010"
-            }
         },
         State {
             name: "hover"
             when: control.hovered
-
-            PropertyChanges {
-                target: gradientStop
-                color: "#434343"
-            }
-
-            PropertyChanges {
-                target: gradientStop1
-                color: "#101010"
-            }
         }
     ]
 }

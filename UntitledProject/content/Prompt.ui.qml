@@ -19,38 +19,31 @@ Rectangle {
     width: Constants.width
     height: Constants.height
     color: "#272727"
-    state: "StartMenu"
+    property alias timelineAnimation: timelineAnimation
+    state: "Opening"
     scale: 1
 
     Rectangle {
-        id: rectangle1
-        x: 8
-        y: 937
+        id: headerbox
+        x: -6
+        y: 931
         width: 1912
         height: 143
         color: "#1d1d1d"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.leftMargin: 0
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
-        anchors.leftMargin: 8
-
-        Image {
-            id: logonobackground
-            x: 1254
-            y: 32
-            width: 642
-            height: 79
-            source: "images/logo-no-background.png"
-            fillMode: Image.PreserveAspectFit
-        }
     }
 
     SButton {
         id: startPlanning
-        x: 810
-        y: 344
+        x: 1399
+        y: 715
+        width: 521
+        height: 103
         text: "Start Planning"
 
         Connections {
@@ -61,8 +54,10 @@ Rectangle {
 
     SButton {
         id: exitApp
-        x: 810
-        y: 574
+        x: 1399
+        y: 824
+        width: 521
+        height: 103
         text: "Exit App"
         state: "normal"
 
@@ -147,10 +142,379 @@ Rectangle {
         }
     }
 
+    Image {
+        id: hopefully
+        x: 0
+        y: 3
+        width: 1393
+        height: 927
+        opacity: 0.107
+        source: "images/hopefully.webp"
+        fillMode: Image.PreserveAspectFit
+    }
+
+    Text {
+        id: text1
+        x: 1418
+        y: 18
+        width: 485
+        height: 270
+        color: "#f7f7f7"
+        text: qsTr("Welcome")
+        font.pixelSize: 80
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        font.weight: Font.ExtraBold
+    }
+
+    Timeline {
+        id: openingTimeline
+        animations: [
+            TimelineAnimation {
+                id: timelineAnimation
+                onFinished: rectangle.state = "StartMenu"
+                loops: 1
+                duration: 3000
+                running: false
+                to: 3000
+                from: 0
+            }
+        ]
+        enabled: false
+        startFrame: 0
+        endFrame: 3000
+
+        KeyframeGroup {
+            target: logonobackground
+            property: "opacity"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 1
+            }
+        }
+
+        KeyframeGroup {
+            target: logonobackground
+            property: "x"
+            Keyframe {
+                frame: 0
+                value: 106
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 106
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 1253
+            }
+        }
+
+        KeyframeGroup {
+            target: logonobackground
+            property: "width"
+            Keyframe {
+                frame: 0
+                value: 1709
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 1709
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 642
+            }
+        }
+
+        KeyframeGroup {
+            target: logonobackground
+            property: "y"
+            Keyframe {
+                frame: 0
+                value: 435
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 435
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 968
+            }
+        }
+
+        KeyframeGroup {
+            target: logonobackground
+            property: "height"
+            Keyframe {
+                frame: 0
+                value: 211
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 211
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 79
+            }
+        }
+
+        KeyframeGroup {
+            target: hopefully
+            property: "opacity"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 0
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 0.11
+            }
+        }
+
+        KeyframeGroup {
+            target: headerbox
+            property: "height"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 0
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 143
+            }
+        }
+
+        KeyframeGroup {
+            target: headerbox
+            property: "opacity"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 1000
+                value: 0
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 1
+            }
+        }
+
+        KeyframeGroup {
+            target: startPlanning
+            property: "x"
+            Keyframe {
+                frame: 0
+                value: 1920
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 1920
+            }
+
+            Keyframe {
+                frame: 3000
+                value: 1399
+            }
+        }
+
+        KeyframeGroup {
+            target: startPlanning
+            property: "opacity"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 0
+            }
+
+            Keyframe {
+                frame: 3000
+                value: 1
+            }
+        }
+
+        KeyframeGroup {
+            target: exitApp
+            property: "x"
+            Keyframe {
+                frame: 0
+                value: 1920
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 1920
+            }
+
+            Keyframe {
+                frame: 3000
+                value: 1399
+            }
+        }
+
+        KeyframeGroup {
+            target: exitApp
+            property: "opacity"
+            Keyframe {
+                frame: 0
+                value: 0
+            }
+
+            Keyframe {
+                frame: 2000
+                value: 0
+            }
+
+            Keyframe {
+                frame: 3000
+                value: 1
+            }
+        }
+    }
+
+    Timeline {
+        id: openingTimeline2
+        animations: [
+            TimelineAnimation {
+                id: timelineAnimation1
+                loops: 1
+                duration: 1000
+                running: false
+                to: 1000
+                from: -2
+            }
+        ]
+        enabled: false
+        startFrame: 0
+        endFrame: 1000
+    }
+
+    Image {
+        id: logonobackground
+        x: 1254
+        y: 969
+        width: 642
+        height: 79
+        source: "images/logo-no-background.png"
+        fillMode: Image.PreserveAspectFit
+    }
+
+
+
+
+
 
 
 
     states: [
+        State {
+            name: "Opening"
+
+            PropertyChanges {
+                target: openingTimeline
+                enabled: true
+            }
+
+            PropertyChanges {
+                target: timelineAnimation
+                running: true
+            }
+
+            PropertyChanges {
+                target: logonobackground
+                x: 106
+                y: 435
+                width: 1709
+                height: 211
+                visible: true
+            }
+
+            PropertyChanges {
+                target: openingTimeline2
+            }
+
+            PropertyChanges {
+                target: timelineAnimation1
+                running: true
+            }
+
+            PropertyChanges {
+                target: startPlanning
+                x: 1920
+                opacity: 0
+                visible: true
+            }
+
+            PropertyChanges {
+                target: exitApp
+                opacity: 0
+                visible: true
+            }
+
+            PropertyChanges {
+                target: text1
+                visible: false
+            }
+
+            PropertyChanges {
+                target: hopefully
+                opacity: 0
+                visible: true
+            }
+
+            PropertyChanges {
+                target: rectangle
+                color: "#272727"
+            }
+
+            PropertyChanges {
+                target: headerbox
+                y: 1080
+                height: 0
+                opacity: 0
+                color: "#1d1d1d"
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+                anchors.bottomMargin: 0
+            }
+        },
+
         State {
             name: "StartMenu"
 
@@ -166,6 +530,25 @@ Rectangle {
             PropertyChanges {
                 target: rectangle
                 color: "#272727"
+            }
+
+            PropertyChanges {
+                target: openingTimeline
+            }
+
+            PropertyChanges {
+                target: timelineAnimation
+                running: true
+            }
+
+            PropertyChanges {
+                target: openingTimeline2
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: timelineAnimation1
+                running: false
             }
         },
         State {
@@ -194,12 +577,49 @@ Rectangle {
                 width: 1920
                 height: 1072
             }
+
+            PropertyChanges {
+                target: hopefully
+                visible: false
+            }
+
+            PropertyChanges {
+                target: text1
+                visible: false
+            }
+
+            PropertyChanges {
+                target: openingTimeline
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: timelineAnimation
+                running: false
+            }
+
+            PropertyChanges {
+                target: openingTimeline2
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: timelineAnimation1
+                running: false
+            }
         },
         State {
-            name: "State1"
-        },
-        State {
-            name: "State3"
+            name: "State4"
+
+            PropertyChanges {
+                target: openingTimeline2
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: timelineAnimation1
+                running: false
+            }
         }
     ]
 }

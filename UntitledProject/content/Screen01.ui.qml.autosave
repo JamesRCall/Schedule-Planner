@@ -1,0 +1,58 @@
+/*
+This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
+It is supposed to be strictly declarative and only uses a subset of QML. If you edit
+this file manually, you might introduce QML code that is not supported by Qt Design Studio.
+Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
+*/
+
+import QtQuick 6.2
+import QtQuick.Controls 6.2
+import UntitledProject
+
+Rectangle {
+    id: rectangle
+    width: Constants.width
+    height: Constants.height
+    color: "#272727"
+    
+    
+    Text {
+        color: "#e06efdff"
+        text: qsTr("Schedule Planner")
+        wrapMode: Text.NoWrap
+        font.pointSize: 25
+        font.bold: false
+        anchors.verticalCenterOffset: -270
+        anchors.horizontalCenterOffset: 3
+        anchors.centerIn: parent
+        font.family: Constants.font.family
+    }
+
+    Button {
+        id: button
+        x: 910
+        y: 584
+        text: qsTr("Start Planning")
+        property bool property0: false
+        checked: false
+        checkable: true
+        highlighted: true
+    }
+    
+    Button {
+        id: button1
+        x: 910
+        y: 735
+        text: qsTr("Exit App")
+        highlighted: true
+    }
+    
+    Rectangle {
+        id: rectangle1
+        x: 440
+        y: 119
+        width: 1046
+        height: 117
+        color: "#1d1d1d"
+    }
+}

@@ -19,6 +19,12 @@ Item {
         color: "#303030"
         border.color: "#a1a1a1"
         border.width: 3
+
+        Text {
+            id: text1
+            text: qsTr("Text")
+            font.pixelSize: 12
+        }
     }
 
     MenuButton {
@@ -110,6 +116,22 @@ Item {
                 target: menuSlider
                 currentFrame: 0
                 enabled: true
+            }
+
+            PropertyChanges {
+                target: text1
+                x: menuBackground.x
+                y: menuBackground.y
+                width: 445
+                height: 157
+                color: "#f7f7f7"
+                text: qsTr("This is a Menu")
+                font.pixelSize: 40
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                leftPadding: -50
+                topPadding: -20
+                font.family: "Ubuntu Condensed"
             }
 
         },

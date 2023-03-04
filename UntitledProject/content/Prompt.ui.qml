@@ -1,5 +1,3 @@
-
-
 /*
 This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
 It is supposed to be strictly declarative and only uses a subset of QML. If you edit
@@ -87,69 +85,95 @@ Rectangle {
         delegate: Column {
             spacing: 5
             Rectangle {
-                id: rectangle
+                id: createslider
                 width: 450
                 height: 788
-                color: "#262626"
+                color: "#212121"
+                border.color: "#414141"
+                border.width: 5
 
                 Image {
-                    id: testrun
-                    source: "images/testrun.webp"
+                    id: createimage
+                    source: imagesource
                     width: 450
                     height: 788
                     fillMode: Image.PreserveAspectFit
-                    opacity: 0.1
+                    opacity: 0.2
                 }
+                Image {
+                    id: addcreate
+                    source: "images/addthem.png"
+                    width: 200
+                    height: 200
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    fillMode: Image.PreserveAspectFit
+                    opacity: 0.7
+                }
+                Text {
+                    id: text2
+                    width: 200
+                    height: 500
+                    x: positionx
+                    y: positiony
+                    color: "#f7f7f7"
+                    font.pixelSize: 70
+                    text: name
+                    font.bold: true
+                }
+
             }
-            Text {
-                x: 5
-                text: name
-                font.bold: true
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
+
         }
         path: Path {
-            startX: 1853
-            startY: 264
+            startX: 2312
+            startY: 375
 
             PathCubic {
-                x: 1132
-                y: 330
-                control2X: 1280
-                control1X: 1633
-                control2Y: 342
-                control1Y: 319
+                x: 1401
+                y: 516
+                control1Y: 425
+                control2X: 1651
+                control1X: 2016
+                control2Y: 498
             }
 
             PathCubic {
-                x: -475.448
-                y: 307.184
-                control2X: 126.02667
-                control1X: 487.06667
-                control2Y: 307.01333
-                control1Y: 373.53333
+                x: -331.448
+                y: 467.184
+                control1Y: 524.53333
+                control2X: 268.02667
+                control1X: 759.06667
+                control2Y: 496.01333
             }
         }
         model: ListModel {
             ListElement {
-                name: "Grey"
-                colorCode: "grey"
+                name: "Create Event"
+                positionx: 15
+                positiony: 550
+                imagesource: "images/createimage1.webp"
             }
 
             ListElement {
-                name: "Red"
-                colorCode: "red"
+                name: "Create Event"
+                positionx: 15
+                positiony: 550
+                imagesource: "images/createimage2.webp"
             }
 
             ListElement {
-                name: "Blue"
-                colorCode: "blue"
-                source: "images/logo-black.png"
+                name: "Create Event"
+                positionx: 15
+                positiony: 550
+                imagesource: "images/createimage3.webp"
             }
 
             ListElement {
-                name: "Green"
-                colorCode: "green"
+                name: "Create Event"
+                positionx: 15
+                positiony: 550
+                imagesource: "images/createimage4.webp"
             }
         }
     }
@@ -485,6 +509,17 @@ Rectangle {
         y: 1097
     }
 
+    SButton {
+        id: sButton
+        x: -312
+        y: -121
+
+        Connections {
+            target: sButton
+            onClicked: background.state = "MainMenu"
+        }
+    }
+
     states: [
         State {
             name: "Opening"
@@ -721,8 +756,9 @@ Rectangle {
 
             PropertyChanges {
                 target: pathView
-                x: -939
-                y: 1164
+                x: -1115
+                y: 1700
+                visible: false
             }
 
             PropertyChanges {
@@ -803,25 +839,18 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: testrun
-                x: 0
-                y: 0
-                width: 450
-                opacity: 0.2
-                smooth: true
-                scale: 0.99
+                target: text2
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
 
             PropertyChanges {
-                target: rectangle
-                x: 377
-                y: 54
-                width: 450
-                height: 788
-                color: "#565656"
-                radius: 35
-                border.color: "#535353"
-                border.width: 8
+                target: sButton
+                x: 29
+                y: 14
+                width: 387
+                height: 63
+                text: "Go Back"
             }
         }    ]
 }
@@ -830,6 +859,6 @@ Rectangle {
 
 /*##^##
 Designer {
-    D{i:0}D{i:24;invisible:true}
+    D{i:0}D{i:25;invisible:true}
 }
 ##^##*/

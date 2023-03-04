@@ -15,18 +15,17 @@ import QtQuick.Studio.Components 1.0
 import FlowView 6.0
 
 Rectangle {
-    id: rectangle
+    id: background
     width: Constants.width
     height: Constants.height
     color: "#272727"
-    property alias timelineAnimation: timelineAnimation
     state: "Opening"
     scale: 1
 
     Rectangle {
         id: headerbox
         x: -6
-        y: 931
+        y: 937
         width: 1912
         height: 143
         color: "#1d1d1d"
@@ -41,21 +40,22 @@ Rectangle {
     SButton {
         id: startPlanning
         x: 1399
-        y: 715
+        y: 719
         width: 521
         height: 103
         text: "Start Planning"
+        state: "normal"
 
         Connections {
             target: startPlanning
-            onClicked: rectangle.state = "State2"
+            onClicked: background.state = "MainMenu"
         }
     }
 
     SButton {
         id: exitApp
-        x: 1399
-        y: 824
+        x: 1920
+        y: 828
         width: 521
         height: 103
         text: "Exit App"
@@ -63,22 +63,43 @@ Rectangle {
 
         Connections {
             target: exitApp
-            onClicked: exitApp.toggle()
+            onClicked: background.state = "Opening"
+        }
+    }
+
+    AddOption {
+        id: addOption
+        x: -1234
+        y: 978
+
+        Connections {
+            target: addOption
+            onClicked: background.state = "State2"
         }
     }
 
     PathView {
         id: pathView
-        x: -557.576
-        y: 796.97
-        width: 250
-        height: 130
+        x: -915
+        y: 1567
+        width: 200
+        height: 100
         delegate: Column {
             spacing: 5
-            SButton {
-                id: colorCode
-                text: "Exit App"
-                state: "normal"
+            Rectangle {
+                id: rectangle
+                width: 450
+                height: 788
+                color: "#262626"
+
+                Image {
+                    id: testrun
+                    source: "images/testrun.webp"
+                    width: 450
+                    height: 788
+                    fillMode: Image.PreserveAspectFit
+                    opacity: 0.1
+                }
             }
             Text {
                 x: 5
@@ -88,34 +109,25 @@ Rectangle {
             }
         }
         path: Path {
-            startX: 2145
-            startY: 575
+            startX: 1853
+            startY: 264
 
             PathCubic {
-                x: 2024
-                y: 546
-                control2Y: 546
-                control1Y: 575
-                control2X: 2024
-                control1X: 2145
+                x: 1132
+                y: 330
+                control2X: 1280
+                control1X: 1633
+                control2Y: 342
+                control1Y: 319
             }
 
             PathCubic {
-                x: 412.552
-                y: 667.184
-                control2Y: 615.01333
-                control1Y: 584.53333
-                control2X: 994.02667
-                control1X: 1497.06667
-            }
-
-            PathCubic {
-                x: -482
-                y: 680
-                control2Y: 685
-                control1Y: 700.44
-                control2X: -184.6
-                control1X: -119.16
+                x: -475.448
+                y: 307.184
+                control2X: 126.02667
+                control1X: 487.06667
+                control2Y: 307.01333
+                control1Y: 373.53333
             }
         }
         model: ListModel {
@@ -144,8 +156,8 @@ Rectangle {
 
     Image {
         id: hopefully
-        x: 0
-        y: 3
+        x: -278
+        y: -1070
         width: 1393
         height: 927
         opacity: 0.107
@@ -154,9 +166,9 @@ Rectangle {
     }
 
     Text {
-        id: text1
-        x: 1418
-        y: 18
+        id: welcome
+        x: 2214
+        y: -466
         width: 485
         height: 270
         color: "#f7f7f7"
@@ -172,7 +184,7 @@ Rectangle {
         animations: [
             TimelineAnimation {
                 id: timelineAnimation
-                onFinished: rectangle.state = "StartMenu"
+                onFinished: background.state = "StartMenu"
                 loops: 1
                 duration: 3000
                 running: false
@@ -193,7 +205,7 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 1
             }
         }
@@ -207,12 +219,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 106
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 1253
             }
         }
@@ -226,12 +238,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 1709
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 642
             }
         }
@@ -245,12 +257,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 435
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 968
             }
         }
@@ -264,12 +276,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 211
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 79
             }
         }
@@ -283,12 +295,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 0
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 0.11
             }
         }
@@ -302,12 +314,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 0
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 143
             }
         }
@@ -321,12 +333,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 1000
+                frame: 1002
                 value: 0
             }
 
             Keyframe {
-                frame: 2000
+                frame: 2002
                 value: 1
             }
         }
@@ -340,12 +352,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 2000
+                frame: 1334
                 value: 1920
             }
 
             Keyframe {
-                frame: 3000
+                frame: 2002
                 value: 1399
             }
         }
@@ -359,12 +371,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 2000
+                frame: 1334
                 value: 0
             }
 
             Keyframe {
-                frame: 3000
+                frame: 2002
                 value: 1
             }
         }
@@ -378,12 +390,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 2000
+                frame: 1335
                 value: 1920
             }
 
             Keyframe {
-                frame: 3000
+                frame: 2003
                 value: 1399
             }
         }
@@ -397,12 +409,12 @@ Rectangle {
             }
 
             Keyframe {
-                frame: 2000
+                frame: 1335
                 value: 0
             }
 
             Keyframe {
-                frame: 3000
+                frame: 2003
                 value: 1
             }
         }
@@ -427,20 +439,51 @@ Rectangle {
 
     Image {
         id: logonobackground
-        x: 1254
-        y: 969
+        x: 1253
+        y: 968
         width: 642
         height: 79
         source: "images/logo-no-background.png"
         fillMode: Image.PreserveAspectFit
     }
 
+    RectangleItem {
+        id: calendar
+        x: -1060
+        y: 287
 
+        Text {
+            id: calendartext
+            x: 95
+            y: -160
+            text: qsTr("Text")
+            font.pixelSize: 12
+        }
+    }
 
+    Rectangle {
+        id: thisWeek
+        x: -1060
+        y: 470
+        width: 200
+        height: 200
+        color: "#ffffff"
+    }
 
+    Rectangle {
+        id: thisDay
+        x: -1060
+        y: 719
+        width: 200
+        height: 200
+        color: "#ffffff"
+    }
 
-
-
+    SliderMenu {
+        id: sliderMenu
+        x: -639
+        y: 1097
+    }
 
     states: [
         State {
@@ -458,7 +501,7 @@ Rectangle {
 
             PropertyChanges {
                 target: logonobackground
-                x: 106
+                x: 1253
                 y: 435
                 width: 1709
                 height: 211
@@ -488,18 +531,20 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: text1
+                target: welcome
                 visible: false
             }
 
             PropertyChanges {
                 target: hopefully
+                x: 0
+                y: 0
                 opacity: 0
                 visible: true
             }
 
             PropertyChanges {
-                target: rectangle
+                target: background
                 color: "#272727"
             }
 
@@ -513,6 +558,14 @@ Rectangle {
                 anchors.rightMargin: 0
                 anchors.bottomMargin: 0
             }
+
+            PropertyChanges {
+                target: calendartext
+                x: 8
+                y: 60
+                width: 150
+                height: 58
+            }
         },
 
         State {
@@ -520,15 +573,15 @@ Rectangle {
 
             PropertyChanges {
                 target: startPlanning
+                x: 1399
+                y: 719
                 visible: true
                 text: "Start Planning"
-                autoExclusive: false
-                checked: false
-                checkable: false
+                state: "normal"
             }
 
             PropertyChanges {
-                target: rectangle
+                target: background
                 color: "#272727"
             }
 
@@ -550,7 +603,136 @@ Rectangle {
                 target: timelineAnimation1
                 running: false
             }
+
+            PropertyChanges {
+                target: welcome
+                x: 1422
+                y: 35
+                text: qsTr("Welcome")
+            }
+
+            PropertyChanges {
+                target: hopefully
+                x: 0
+                y: 0
+            }
+
+            PropertyChanges {
+                target: logonobackground
+                x: 1253
+                y: 968
+            }
+
+            PropertyChanges {
+                target: headerbox
+                y: 937
+                anchors.bottomMargin: 0
+                anchors.leftMargin: 0
+                anchors.rightMargin: 0
+            }
+
+            PropertyChanges {
+                target: exitApp
+                x: 1399
+                y: 828
+            }
         },
+        State {
+            name: "MainMenu"
+
+            PropertyChanges {
+                target: openingTimeline2
+                enabled: false
+            }
+
+            PropertyChanges {
+                target: timelineAnimation1
+                running: false
+            }
+
+            PropertyChanges {
+                target: hopefully
+                visible: false
+            }
+
+            PropertyChanges {
+                target: startPlanning
+                visible: false
+            }
+
+            PropertyChanges {
+                target: exitApp
+                visible: false
+            }
+
+            PropertyChanges {
+                target: welcome
+                visible: false
+            }
+
+            PropertyChanges {
+                target: calendar
+                x: 61
+                y: 48
+                width: 1109
+                height: 503
+                strokeColor: "#787878"
+                fillColor: "#373737"
+            }
+
+            PropertyChanges {
+                target: calendartext
+                x: 161
+                y: 179
+                width: 518
+                height: 208
+                color: "#ffffff"
+                text: qsTr("Calendar")
+                font.pixelSize: 50
+            }
+
+            PropertyChanges {
+                target: thisWeek
+                x: 1253
+                y: 55
+                width: 504
+                height: 496
+                color: "#5c5c5c"
+                border.color: "#929292"
+            }
+
+            PropertyChanges {
+                target: thisDay
+                x: 52
+                y: 621
+                width: 1469
+                height: 288
+                color: "#777777"
+                border.color: "#e7e7e7"
+            }
+
+            PropertyChanges {
+                target: addOption
+                x: 1569
+                y: 621
+                width: 288
+                height: 288
+            }
+
+            PropertyChanges {
+                target: pathView
+                x: -939
+                y: 1164
+            }
+
+            PropertyChanges {
+                target: sliderMenu
+                x: 1468
+                y: 8
+                state: "Closed"
+            }
+        },
+
         State {
             name: "State2"
 
@@ -566,14 +748,14 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: rectangle
+                target: background
                 color: "#272727"
             }
 
             PropertyChanges {
                 target: pathView
-                x: 0
-                y: 13
+                x: -6
+                y: 8
                 width: 1920
                 height: 1072
             }
@@ -584,7 +766,7 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: text1
+                target: welcome
                 visible: false
             }
 
@@ -607,21 +789,47 @@ Rectangle {
                 target: timelineAnimation1
                 running: false
             }
-        },
-        State {
-            name: "State4"
 
             PropertyChanges {
-                target: openingTimeline2
-                enabled: false
+                target: thisDay
+                x: -1060
+                y: 731
             }
 
             PropertyChanges {
-                target: timelineAnimation1
-                running: false
+                target: calendar
+                x: -1060
+                y: 281
             }
-        }
-    ]
+
+            PropertyChanges {
+                target: testrun
+                x: 0
+                y: 0
+                width: 450
+                opacity: 0.2
+                smooth: true
+                scale: 0.99
+            }
+
+            PropertyChanges {
+                target: rectangle
+                x: 377
+                y: 54
+                width: 450
+                height: 788
+                color: "#565656"
+                radius: 35
+                border.color: "#535353"
+                border.width: 8
+            }
+        }    ]
 }
 
 
+
+/*##^##
+Designer {
+    D{i:0}D{i:24;invisible:true}
+}
+##^##*/

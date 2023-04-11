@@ -72,7 +72,7 @@ Rectangle {
 
         Connections {
             target: addOption
-            onClicked: background.state = "State2"
+            onClicked: background.state = "addEventPanel"
         }
     }
 
@@ -91,6 +91,17 @@ Rectangle {
                 color: "#212121"
                 border.color: "#414141"
                 border.width: 5
+
+                Button {
+                    id: sliderButton
+                    width: 450
+                    height: 788
+                    opacity: 0.2
+                    Connections {
+                        target: sliderButton
+                        onClicked: background.state = "CreateEvent"
+                    }
+                }
 
                 Image {
                     id: createimage
@@ -121,6 +132,9 @@ Rectangle {
                     text: name
                     font.bold: true
                 }
+
+
+
 
             }
 
@@ -471,36 +485,97 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
     }
 
+
     RectangleItem {
         id: calendar
         x: -1060
         y: 287
 
-        Text {
-            id: calendartext
-            x: 95
-            y: -160
-            text: qsTr("Text")
-            font.pixelSize: 12
+        Cal {
+            id: cal
         }
-    }
 
-    Rectangle {
-        id: thisWeek
-        x: -1060
-        y: 470
-        width: 200
-        height: 200
-        color: "#ffffff"
-    }
+        Grid {
+            id: calendarGrid
+            columns: 7
+            rows: 7
+            spacing: 6
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.horizontalCenter: parent.horizontalCenter
 
-    Rectangle {
-        id: thisDay
-        x: -1060
-        y: 719
-        width: 200
-        height: 200
-        color: "#ffffff"
+            Text {
+                id : sunday
+                text: "Sun"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+            Text {
+                id : monday
+                text: "Mon"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+                }
+
+            Text {
+                id : tuesday
+                text: "Tue"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : wednesday
+                text: "Wed"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : thursday
+                text: "Thu"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : friday
+                text: "Fri"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : saturday
+                text: "Sat"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            // Define the other days of the week
+
+            Repeater {
+                id : calendarRepeater
+                model: cal.daysInMonth // or any number of days you want to show
+
+                Button {
+                    id: dayButton
+                    text: modelData + 1
+
+                    width: 145
+                    height: 80
+                }
+            }
+        }
+
+
+
     }
 
     SliderMenu {
@@ -510,15 +585,45 @@ Rectangle {
     }
 
     SButton {
-        id: sButton
-        x: -312
-        y: -121
+        id: goBackButton
+        x: 29
+        y: 14
+        width: 387
+        height: 63
+        visible: false
 
         Connections {
-            target: sButton
+            target: goBackButton
             onClicked: background.state = "MainMenu"
         }
     }
+
+    Text {
+        id: eventTitle
+        x: 1305
+        y: -265
+        text: qsTr("Text")
+        font.pixelSize: 12
+    }
+
+    TextField {
+        id: textField
+        x: -483
+        y: 73
+        width: 382
+        height: 140
+        background: Rectangle {
+            color: "#737373"
+        }
+        placeholderText: qsTr("Text Field")
+    }
+
+    SButton {
+        id: sButton
+        x: 1680
+        y: -415
+    }
+
 
     states: [
         State {
@@ -594,13 +699,6 @@ Rectangle {
                 anchors.bottomMargin: 0
             }
 
-            PropertyChanges {
-                target: calendartext
-                x: 8
-                y: 60
-                width: 150
-                height: 58
-            }
         },
 
         State {
@@ -617,6 +715,7 @@ Rectangle {
 
             PropertyChanges {
                 target: background
+                width: 1920
                 color: "#272727"
             }
 
@@ -716,37 +815,6 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: calendartext
-                x: 161
-                y: 179
-                width: 518
-                height: 208
-                color: "#ffffff"
-                text: qsTr("Calendar")
-                font.pixelSize: 50
-            }
-
-            PropertyChanges {
-                target: thisWeek
-                x: 1253
-                y: 55
-                width: 504
-                height: 496
-                color: "#5c5c5c"
-                border.color: "#929292"
-            }
-
-            PropertyChanges {
-                target: thisDay
-                x: 52
-                y: 621
-                width: 1469
-                height: 288
-                color: "#777777"
-                border.color: "#e7e7e7"
-            }
-
-            PropertyChanges {
                 target: addOption
                 x: 1569
                 y: 621
@@ -767,10 +835,24 @@ Rectangle {
                 y: 8
                 state: "Closed"
             }
+
+            PropertyChanges {
+                target: calendarGrid
+                x: 14
+                y: 17
+                verticalItemAlignment: Grid.AlignVCenter
+                horizontalItemAlignment: Grid.AlignHCenter
+            }
+
+            PropertyChanges {
+                target: sunday
+                horizontalAlignment: Text.AlignRight
+                leftPadding: 0
+            }
         },
 
         State {
-            name: "State2"
+            name: "addEventPanel"
 
             PropertyChanges {
                 target: startPlanning
@@ -827,12 +909,6 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: thisDay
-                x: -1060
-                y: 731
-            }
-
-            PropertyChanges {
                 target: calendar
                 x: -1060
                 y: 281
@@ -845,20 +921,71 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: sButton
+                target: goBackButton
                 x: 29
                 y: 14
                 width: 387
                 height: 63
+                visible: true
                 text: "Go Back"
             }
-        }    ]
+        },
+        State {
+            name: "CreateEvent"
+
+            PropertyChanges {
+                target: background
+                color: "#272727"
+            }
+
+            PropertyChanges {
+                target: eventTitle
+                x: 530
+                y: 41
+                width: 860
+                height: 110
+                color: "#ffffff"
+                text: qsTr("Create Event")
+                font.pixelSize: 70
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            PropertyChanges {
+                target: startPlanning
+                x: 1920
+                y: 719
+            }
+
+            PropertyChanges {
+                target: goBackButton
+                visible: true
+                text: "Go Back"
+            }
+
+            PropertyChanges {
+                target: textField
+                x: 42
+                y: 173
+                width: 668
+                height: 67
+                color: "#ffffff"
+                font.pointSize: 15
+                placeholderTextColor: "#88e4e4e4"
+                placeholderText: qsTr("Create Event Name")
+            }
+
+            PropertyChanges {
+                target: sButton
+                x: 1506
+                y: 795
+                width: 379
+                height: 100
+                text: "Create Event"
+            }
+        }]
 }
 
 
 
-/*##^##
-Designer {
-    D{i:0}D{i:25;invisible:true}
-}
-##^##*/
+

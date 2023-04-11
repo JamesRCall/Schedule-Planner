@@ -11,10 +11,11 @@ Window {
 
     visible: true
     title: "UntitledProject"
-
     Prompt{
         id: mainScreen
     }
+
+
 
 }
 

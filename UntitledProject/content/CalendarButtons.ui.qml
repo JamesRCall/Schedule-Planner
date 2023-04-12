@@ -1,19 +1,17 @@
-
-
 /*
 This is a UI file (.ui.qml) that is intended to be edited in Qt Design Studio only.
 It is supposed to be strictly declarative and only uses a subset of QML. If you edit
 this file manually, you might introduce QML code that is not supported by Qt Design Studio.
 Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on .ui.qml files.
 */
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Button {
     id: control
-    width: 300
-    height: 100
-    text: qsTr("My Button")
+    width: 100
+    height: 40
 
     implicitWidth: Math.max(
                        buttonBackground ? buttonBackground.implicitWidth : 0,
@@ -24,36 +22,30 @@ Button {
     leftPadding: 4
     rightPadding: 4
 
+    text: "My Button"
+
     background: buttonBackground
     Rectangle {
         id: buttonBackground
+        color: "#b1b1b1"
         implicitWidth: 100
         implicitHeight: 40
         opacity: enabled ? 1 : 0.3
-        visible: true
-        color: "#5b5b5b"
-        radius: 7
-        border.color: "#7d7d7d"
-        smooth: true
+        radius: 2
+        border.color: "#ededed"
     }
 
     contentItem: textItem
     Text {
         id: textItem
-        x: 0
-        y: 0
-        width: 300
-        height: 100
+        text: control.text
 
         opacity: enabled ? 1.0 : 0.3
         color: "#ffffff"
-        text: control.text
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        wrapMode: Text.NoWrap
-        font.pointSize: 35
-        font.styleName: "Bold"
-        font.family: "Ubuntu Condensed"
+        font.bold: true
+        font.pointSize: 15
     }
 
     states: [
@@ -63,8 +55,8 @@ Button {
 
             PropertyChanges {
                 target: buttonBackground
-                color: "#383838"
-                border.color: "#545454"
+                color: "#b1b1b1"
+                border.color: "#ededed"
             }
 
             PropertyChanges {
@@ -78,24 +70,12 @@ Button {
             PropertyChanges {
                 target: textItem
                 color: "#ffffff"
-                text: control.text
             }
 
             PropertyChanges {
                 target: buttonBackground
-                color: "#1e1e1e"
-                border.color: "#828282"
-                border.width: 0
-            }
-        },
-        State {
-            name: "hover"
-            when: control.hovered
-
-            PropertyChanges {
-                target: buttonBackground
-                color: "#2d2d2d"
-                border.color: "#545454"
+                color: "#555555"
+                border.color: "#00000000"
             }
         }
     ]

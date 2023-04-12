@@ -14,7 +14,7 @@ import FlowView 6.0
 
 Rectangle {
     id: background
-    width: Constants.width
+    width: 1920
     height: Constants.height
     color: "#272727"
     state: "Opening"
@@ -41,6 +41,7 @@ Rectangle {
         y: 719
         width: 521
         height: 103
+        visible: false
         text: "Start Planning"
         state: "normal"
 
@@ -75,6 +76,8 @@ Rectangle {
             onClicked: background.state = "addEventPanel"
         }
     }
+
+
 
     PathView {
         id: pathView
@@ -490,9 +493,33 @@ Rectangle {
         id: calendar
         x: -1060
         y: 287
+        visible: false
 
         Cal {
             id: cal
+        }
+        CalendarButtons {
+            id: prevMonth
+            x: 23
+            y: 16
+            font.pointSize: 15
+            onClicked: cal.month = (cal.month > 0) ? cal.month - 1 : (cal.month == 0 ) ? (cal.year--, 11) : cal.month;
+        }
+
+        CalendarButtons {
+            id: nextMonth
+            x: 875
+            y: 16
+            onClicked: cal.month = (cal.month < 11) ? cal.month + 1 : (cal.month == 11) ? (cal.year++, 0) : cal.month;
+        }
+
+        Text {
+            id: calendarTitle
+            text: cal.monthName + " - " + cal.year
+            font.bold: true
+            color: "#f7f7f7"
+            font.pixelSize: 50
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Grid {
@@ -500,7 +527,7 @@ Rectangle {
             columns: 7
             rows: 7
             spacing: 6
-            anchors.verticalCenter: parent.verticalCenter
+            anchors.verticalCenter: calendarTitle.verticalBottom
             anchors.horizontalCenter: parent.horizontalCenter
 
             Text {
@@ -516,7 +543,7 @@ Rectangle {
                 font.bold: true
                 color: "#f7f7f7"
                 font.pixelSize: 30
-                }
+            }
 
             Text {
                 id : tuesday
@@ -562,17 +589,20 @@ Rectangle {
 
             Repeater {
                 id : calendarRepeater
-                model: cal.daysInMonth // or any number of days you want to show
-
+                model: cal.daysInMonth + cal.dayOfWeek // or any number of days you want to show
                 Button {
                     id: dayButton
-                    text: modelData + 1
-
-                    width: 145
-                    height: 80
+                    text: modelData - cal.dayOfWeek + 1
+                    opacity: (modelData - cal.dayOfWeek >= 0) ? true : false
+                    width: 130
+                    height: 70
+                    onClicked: cal.test = (modelData)/7
                 }
             }
         }
+
+
+
 
 
 
@@ -602,27 +632,201 @@ Rectangle {
         id: eventTitle
         x: 1305
         y: -265
-        text: qsTr("Text")
+        text: "Create Event "
         font.pixelSize: 12
     }
+    ListModel {
+        id: listModel
+    }
+
+
 
     TextField {
-        id: textField
-        x: -483
-        y: 73
-        width: 382
-        height: 140
+        id: eventTextField
         background: Rectangle {
             color: "#737373"
         }
-        placeholderText: qsTr("Text Field")
+        x: 42
+        y: 173
+        width: 668
+        height: 67
+        visible: false
+        color: "#ffffff"
+        font.pointSize: 15
+        placeholderTextColor: "#88e4e4e4"
+        placeholderText: qsTr("Create Event Name")
+    }
+
+    Rectangle {
+        id: startTime
+        x: 860
+        y: -243
+        width: 200
+        height: 200
+        visible: false
+        color: "#737373"
+
+        TextField {
+            id: startHour
+            x: 796
+            y: 173
+            background: Rectangle {
+                color: "#737373"
+            }
+            validator: IntValidator { bottom: 1; top: 12 }
+            visible: false
+            color: "#ffffff"
+            font.pointSize: 15
+            placeholderTextColor: "#88e4e4e4"
+            placeholderText: qsTr("12")
+        }
+
+        TextField {
+            id: startMinute
+            x: 42
+            y: 0
+            visible: false
+            color: "#ffffff"
+            placeholderTextColor: "#88e4e4e4"
+            placeholderText: qsTr("00")
+            validator: IntValidator {
+                bottom: 0
+                top: 60
+            }
+            background: Rectangle {
+                color: "#737373"
+            }
+            font.pointSize: 15
+        }
+
+        Text {
+            id: startSemi
+            text: qsTr("Text")
+            font.pixelSize: 12
+        }
+
+
+    }
+
+    Rectangle {
+        id: endTime
+        x: 0
+        y: 0
+        width: 74
+        height: 67
+        visible: false
+        color: "#737373"
+        TextField {
+            id: endHour
+            x: 0
+            y: 0
+            height: 67
+            width: 34
+            visible: false
+            color: "#ffffff"
+            placeholderTextColor: "#88e4e4e4"
+            placeholderText: qsTr("12")
+            validator: IntValidator {
+                bottom: 1
+                top: 12
+            }
+            background: Rectangle {
+                color: "#737373"
+            }
+            font.pointSize: 15
+            horizontalAlignment: Text.AlignLeft
+        }
+
+        TextField {
+            id: endMinute
+            x: 42
+            y: 0
+            height: 67
+            width: 32
+            horizontalAlignment: Text.AlignRight
+            visible: false
+            color: "#ffffff"
+            placeholderTextColor: "#88e4e4e4"
+            placeholderText: qsTr("00")
+            validator: IntValidator {
+                bottom: 0
+                top: 60
+            }
+            background: Rectangle {
+                color: "#737373"
+            }
+            font.pointSize: 15
+        }
+
+        Text {
+            id: endSemi
+            x: 0
+            y: 0
+            width: 75
+            height: 67
+            color: "#88e4e4e4"
+            text: qsTr(":")
+            font.pixelSize: 27
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            bottomPadding: 6
+            font.bold: false
+        }
     }
 
     SButton {
-        id: sButton
-        x: 1680
-        y: -415
+        id: createEvent
+        x: 1506
+        y: 795
+        visible: false
+        text: "Create Event"
+
+        Connections {
+            target: createEvent
+            onClicked: {
+                if (startHour.acceptableInput) {
+                    console.log("Month: " + startHour.text);
+                    startHour.text = "";
+                }
+                else {
+                    console.log("Invalid month input");
+                }
+            }
+        }
     }
+
+    SButton {
+        id: testButton
+        x: 1576
+        y: 645
+        visible: false
+        Connections {
+            target: testButton
+            onClicked: {
+                cal.vomitAllListModels()
+            }
+        }
+    }
+
+    TextField {
+        id: eventTextField1
+        x: 47
+        y: 178
+        width: 668
+        height: 67
+        visible: false
+        color: "#ffffff"
+        placeholderTextColor: "#88e4e4e4"
+        placeholderText: qsTr("Event Description...")
+        background: Rectangle {
+            color: "#737373"
+        }
+        font.pointSize: 15
+        verticalAlignment: TextInput.AlignVTop
+    }
+
+
+
 
 
     states: [
@@ -808,8 +1012,9 @@ Rectangle {
                 target: calendar
                 x: 61
                 y: 48
-                width: 1109
-                height: 503
+                width: 1000
+                height: 600
+                visible: true
                 strokeColor: "#787878"
                 fillColor: "#373737"
             }
@@ -840,15 +1045,22 @@ Rectangle {
                 target: calendarGrid
                 x: 14
                 y: 17
+                topPadding: 50
                 verticalItemAlignment: Grid.AlignVCenter
                 horizontalItemAlignment: Grid.AlignHCenter
             }
 
             PropertyChanges {
-                target: sunday
-                horizontalAlignment: Text.AlignRight
-                leftPadding: 0
+                target: prevMonth
+                text: "Previous"
             }
+
+            PropertyChanges {
+                target: nextMonth
+                text: "Next"
+            }
+
+
         },
 
         State {
@@ -914,11 +1126,6 @@ Rectangle {
                 y: 281
             }
 
-            PropertyChanges {
-                target: text2
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-            }
 
             PropertyChanges {
                 target: goBackButton
@@ -964,25 +1171,103 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: textField
-                x: 42
-                y: 173
-                width: 668
-                height: 67
-                color: "#ffffff"
-                font.pointSize: 15
-                placeholderTextColor: "#88e4e4e4"
-                placeholderText: qsTr("Create Event Name")
+                target: exitApp
+                visible: false
             }
 
             PropertyChanges {
-                target: sButton
-                x: 1506
-                y: 795
-                width: 379
-                height: 100
-                text: "Create Event"
+                target: createEvent
+                x: 1576
+                y: 800
+                visible: true
             }
+
+            PropertyChanges {
+                target: eventTextField
+                visible: true
+            }
+
+            PropertyChanges {
+                target: testButton
+                visible: true
+            }
+
+            PropertyChanges {
+                target: startHour
+                x: 0
+                y: 0
+                width: 34
+                height: 67
+                visible: true
+                horizontalAlignment: Text.AlignRight
+                rightPadding: 0
+            }
+
+            PropertyChanges {
+                target: startMinute
+                width: 32
+                height: 67
+                visible: true
+                color: "#ffffff"
+                horizontalAlignment: Text.AlignLeft
+                leftPadding: 0
+            }
+
+            PropertyChanges {
+                target: startTime
+                x: 744
+                y: 173
+                width: 74
+                height: 67
+                visible: true
+            }
+
+            PropertyChanges {
+                target: startSemi
+                x: 0
+                y: 0
+                width: 75
+                height: 67
+                color: "#88e4e4e4"
+                text: qsTr(":")
+                font.pixelSize: 27
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                bottomPadding: 6
+                font.bold: false
+            }
+
+            PropertyChanges {
+                target: eventTextField1
+                x: 42
+                y: 259
+                width: 878
+                height: 281
+                visible: true
+            }
+
+            PropertyChanges {
+                target: endTime
+                x: 845
+                y: 173
+                width: 75
+                height: 67
+                visible: true
+            }
+
+            PropertyChanges {
+                target: endMinute
+                visible: true
+                horizontalAlignment: Text.AlignLeft
+                leftPadding: 0
+            }
+
+            PropertyChanges {
+                target: endHour
+                visible: true
+                rightPadding: 0
+            }
+
         }]
 }
 

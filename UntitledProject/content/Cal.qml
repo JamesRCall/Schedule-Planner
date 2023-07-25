@@ -1,4 +1,3 @@
-
 import QtQuick 6.2
 
 Item {
@@ -21,27 +20,52 @@ Item {
         }
     property var eventArray: []
 
-
-
-    function addEvent(eventName, eventType, eventDescription, startHour, startMinute, endHour, endMinute, eventDay, eventMonth, eventYear) {
-
-        var startTime = startHour * 60 + startMinute;
-        var endTime = endHour * 60 + endMinute;
+    function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year) {
+        var startTime = Number(startHour) * 60 + Number(startMinute);
+        var endTime = Number(endHour) * 60 + Number(endMinute);
 
         var newEvent = {
-            eventName: eventName,
-            eventType: eventType,
-            eventDescription: eventDescription,
-            startTime: startTime,
-            endTime: endTime,
-            eventDay: eventDay,
-            eventMonth: eventMonth,
-            eventYear: eventYear
+            "eventName": name,
+            "eventType": type,
+            "eventDescription": description,
+            "startTime": startTime,
+            "endTime": endTime,
+            "eventDay": Number(day),
+            "eventMonth": Number(month) - 1,  // Adjust month to JavaScript's 0-11 scale
+            "eventYear": Number(year)
         };
 
-        eventArray.push(newEvent);
+        console.log("New event data:", JSON.stringify(newEvent));
+        eventModel.append(newEvent);
+        eventArray = eventArray.concat(newEvent);  // Use concat method to append the newEvent to the eventArray.
+
+        updateEventModel(year, month-1, day);
     }
 
+    function updateEventModel(year, month, day) {
+        // Create a copy of the eventModel
+        var oldEventModel = JSON.parse(JSON.stringify(eventModel));
+
+        // Then, clear the current model
+        while (eventModel.count > 0) {
+            eventModel.remove(0);
+        }
+
+        // Then, fill the model with events from the specified date
+        var filteredModel = createFilteredModelForDate(year, month, day);
+        if (filteredModel.count === 0) {
+            // If no events were found for this date, restore the oldEventModel
+            for (var i = 0; i < oldEventModel.count; i++) {
+                var item = oldEventModel.get(i);
+                eventModel.append(item);
+            }
+        } else {
+            for (var i = 0; i < filteredModel.count; i++) {
+                var item = filteredModel.get(i);
+                eventModel.append(item);
+            }
+        }
+    }
 
     function createFilteredModel(events, targetYear, targetMonth, targetDay) {
         var filteredEvents = events.filter(function (event) {
@@ -50,21 +74,7 @@ Item {
                    event.eventDay === targetDay;
         });
 
-        var formattedEvents = filteredEvents.map(function (event) {
-            return {
-                eventName: event.eventName,
-                eventType: event.eventType,
-                eventDescription: event.eventDescription,
-                startTime: event.startTime, // Updated calculation
-                endTime: event.endTime, // Updated calculation
-                eventDay: event.eventDay,
-                eventMonth: event.eventMonth,
-                eventYear: event.eventYear
-            };
-        });
-
-        var newModelData = createModelWithEmptyCells(formattedEvents);
-
+        var newModelData = createModelWithEmptyCells(filteredEvents);
         var filteredModel = Qt.createQmlObject('import QtQuick 2.15; ListModel {}', parent);
         newModelData.forEach(function (item) {
             filteredModel.append(item);
@@ -104,16 +114,17 @@ Item {
         });
 
         // Add an empty cell at the end
-        if (lastEndTime < 24) {
+        if (lastEndTime < 24 * 60) {  // endTime is in minutes, so it should be less than 24*60, not 24.
             modelData.push({
                 hasEvent: false,
                 startTime: lastEndTime,
-                endTime: 24
+                endTime: 24 * 60
             });
         }
 
         return modelData;
     }
+
     function printModelContents(model) {
         for (var i = 0; i < model.count; i++) {
             var item = model.get(i);
@@ -124,10 +135,9 @@ Item {
             }
         }
     }
+
     function createFilteredModelForDate(year, month, day) {
         var filteredModel = createFilteredModel(eventArray, year, month, day);
         return filteredModel;
     }
-
-
 }

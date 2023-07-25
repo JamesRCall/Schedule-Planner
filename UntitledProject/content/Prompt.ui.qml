@@ -34,6 +34,9 @@ Rectangle {
         anchors.rightMargin: 0
         anchors.bottomMargin: 0
     }
+    Cal {
+        id: cal
+    }
 
     SButton {
         id: startPlanning
@@ -761,27 +764,29 @@ Rectangle {
             target: createEvent
             onClicked: {
                 if (startHour.acceptableInput && startMinute.acceptableInput && endHour.acceptableInput && endMinute.acceptableInput
-                        && eventMonth.acceptableInput && eventYear.acceptableInput && eventDay.acceptableInput) {
-                    cal.addEvent(eventName.text, eventType.text, eventDescription.text, startHour.text, startMinute.text, endHour.text, endMinute.text, eventDay.text, eventMonth.text, eventYear.text)
+                    && eventMonth.acceptableInput && eventYear.acceptableInput && eventDay.acceptableInput
+                    && eventName.text !== "" && eventType.text !== "" && eventDescription.text !== "") {
+
+                    cal.addEvent(eventName.text, eventType.text, eventDescription.text, startHour.text, startMinute.text, endHour.text, endMinute.text, eventDay.text, eventMonth.text, eventYear.text);
+                    cal.updateEventModel(Number(eventYear.text), Number(eventMonth.text)-1, Number(eventDay.text));
                 }
                 else {
-                    errorMessage.state = "showError"
+                    errorMessage.state = "showError";
                 }
             }
         }
     }
-
-
 
     SButton {
         id: testButton
         x: 1576
         y: 645
         visible: false
+
         Connections {
             target: testButton
             onClicked: {
-                cal.vomitAllListModels()
+                cal.printModelContents(cal.eventModel);
             }
         }
     }
@@ -1409,3 +1414,9 @@ Rectangle {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;annotation:"1 //;;//  //;;//  //;;// <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html> //;;// 1690254314";customId:""}
+}
+##^##*/

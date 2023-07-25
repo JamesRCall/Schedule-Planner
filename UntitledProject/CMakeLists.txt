@@ -1,37 +1,77 @@
-cmake_minimum_required(VERSION 3.21.1)
+cmake_minimum_required(VERSION 3.5)
 
-set(BUILD_QDS_COMPONENTS ON CACHE BOOL "Build design studio components")
+project(Schedule-Planner VERSION 0.1 LANGUAGES CXX)
 
-project(UntitledProjectApp LANGUAGES CXX)
-
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-find_package(QT NAMES Qt6 COMPONENTS Gui Qml Quick)
-find_package(Qt6 REQUIRED COMPONENTS Core Qml Quick)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-qt_add_executable(${CMAKE_PROJECT_NAME} src/main.cpp)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-# qt_standard_project_setup() requires Qt 6.3 or higher. See https://doc.qt.io/qt-6/qt-standard-project-setup.html for details.
-if (${QT_VERSION_MINOR} GREATER_EQUAL 3)
-qt6_standard_project_setup()
+set(TS_FILES Schedule-Planner_en_US.ts)
+
+set(PROJECT_SOURCES
+        main.cpp
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+        Scheduler.cpp
+        Schedule_Header.h
+        Advanced_Other.cpp
+        Advanced_Clubs.cpp
+        Advanced_Classes.cpp
+        Advanced_Mode.cpp
+        Get_Time.cpp
+        Other_Toggle.cpp
+        check.cpp
+        ${TS_FILES}
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(Schedule-Planner
+        MANUAL_FINALIZATION
+        ${PROJECT_SOURCES}
+    )
+# Define target properties for Android with Qt 6 as:
+#    set_property(TARGET Schedule-Planner APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
+#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
+# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
+
+    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+else()
+    if(ANDROID)
+        add_library(Schedule-Planner SHARED
+            ${PROJECT_SOURCES}
+        )
+# Define properties for Android with Qt 5 after find_package() calls as:
+#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
+    else()
+        add_executable(Schedule-Planner
+            ${PROJECT_SOURCES}
+        )
+    endif()
+
+    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-qt_add_resources(${CMAKE_PROJECT_NAME} "configuration"
-    PREFIX "/"
-    FILES
-        qtquickcontrols2.conf
+target_link_libraries(Schedule-Planner PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+set_target_properties(Schedule-Planner PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
-    Qt${QT_VERSION_MAJOR}::Core
-    Qt${QT_VERSION_MAJOR}::Gui
-    Qt${QT_VERSION_MAJOR}::Quick
-    Qt${QT_VERSION_MAJOR}::Qml
-)
+install(TARGETS Schedule-Planner
+    BUNDLE DESTINATION .
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-if (${BUILD_QDS_COMPONENTS})
-    include(${CMAKE_CURRENT_SOURCE_DIR}/qmlcomponents)
-endif ()
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)
+if(QT_VERSION_MAJOR EQUAL 6)
+    qt_finalize_executable(Schedule-Planner)
+endif()

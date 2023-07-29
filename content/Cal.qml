@@ -21,8 +21,12 @@ Item {
     property var eventArray: []
 
     function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year) {
+        console.log("Adding event: ", name, type, description, startHour, startMinute, endHour, endMinute, day, month, year);
+
         var startTime = Number(startHour) * 60 + Number(startMinute);
         var endTime = Number(endHour) * 60 + Number(endMinute);
+
+        console.log("Converted times: ", startTime, endTime);
 
         var newEvent = {
             "eventName": name,
@@ -35,37 +39,43 @@ Item {
             "eventYear": Number(year)
         };
 
-        console.log("New event data:", JSON.stringify(newEvent));
+        console.log("New event object: ", newEvent);
+
         eventModel.append(newEvent);
-        eventArray = eventArray.concat(newEvent);  // Use concat method to append the newEvent to the eventArray.
+        eventArray.push(newEvent);  // Use push method to append the newEvent to the eventArray.
+
+        console.log("Event added to the model and array.");
 
         updateEventModel(year, month-1, day);
+        console.log("Event model updated for the specific date.");
     }
+
 
     function updateEventModel(year, month, day) {
-        // Create a copy of the eventModel
-        var oldEventModel = JSON.parse(JSON.stringify(eventModel));
+            // Create a copy of the eventModel
+            var oldEventModel = JSON.parse(JSON.stringify(eventModel));
 
-        // Then, clear the current model
-        while (eventModel.count > 0) {
-            eventModel.remove(0);
+            // Then, clear the current model
+            while (eventModel.count > 0) {
+                eventModel.remove(0);
+            }
+
+            // Then, fill the model with events from the specified date
+            var filteredModel = createFilteredModelForDate(year, month, day);
+            if (filteredModel.count === 0) {
+                // If no events were found for this date, restore the oldEventModel
+                for (var i = 0; i < oldEventModel.count; i++) {
+                    var item = oldEventModel.get(i);
+                    eventModel.append(item);
+                }
+            } else {
+                for (i = 0; i < filteredModel.count; i++) {
+                    item = filteredModel.get(i);
+                    eventModel.append(item);
+                }
+            }
         }
 
-        // Then, fill the model with events from the specified date
-        var filteredModel = createFilteredModelForDate(year, month, day);
-        if (filteredModel.count === 0) {
-            // If no events were found for this date, restore the oldEventModel
-            for (var i = 0; i < oldEventModel.count; i++) {
-                var item = oldEventModel.get(i);
-                eventModel.append(item);
-            }
-        } else {
-            for (var i = 0; i < filteredModel.count; i++) {
-                var item = filteredModel.get(i);
-                eventModel.append(item);
-            }
-        }
-    }
 
     function createFilteredModel(events, targetYear, targetMonth, targetDay) {
         var filteredEvents = events.filter(function (event) {
@@ -140,4 +150,18 @@ Item {
         var filteredModel = createFilteredModel(eventArray, year, month, day);
         return filteredModel;
     }
+    function printDayEvents(model, year, month, day) {
+        console.log("printDayEvents called with year:", year, "month:", month, "day:", day);
+        console.log("Event model count:", model.count);
+        for (var i = 0; i < model.count; i++) {
+            var item = model.get(i);
+            console.log("Checking event:", item.eventName, item.eventType, item.eventDescription, item.startTime, item.endTime, item.eventDay, item.eventMonth, item.eventYear);
+            if (item.eventDay === day && item.eventMonth === month && item.eventYear === year) {
+                console.log("Event:", item.eventName, item.eventType, item.eventDescription, item.startTime, item.endTime, item.eventDay, item.eventMonth, item.eventYear);
+            } else {
+                console.log("No event on this date");
+            }
+        }
+    }
+
 }

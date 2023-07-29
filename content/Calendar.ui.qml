@@ -4,7 +4,7 @@ import QtQuick.Controls 2.15
 Item {
     id: item1
     width: 1000
-    height: 600
+    height: 800 // Increase height to make room for the list view
     Rectangle {
         id: calendar
         x: 0
@@ -13,9 +13,7 @@ Item {
         height: 600
         color: "#3a3a3a"
         border.color: "#5f5f5f"
-        Cal {
-            id: cal
-        }
+
         CalendarButtons {
             id: prevMonth
             text: "Previous"
@@ -121,20 +119,48 @@ Item {
                     opacity: (modelData - cal.dayOfWeek >= 0) ? true : false
                     width: 130
                     height: 70
-                    Connections {
-                        target: dayButton
-                        onClicked: {
-                            var filteredModel = cal.createFilteredModel(cal.eventArray, 2023, 4, 12);
-                            cal.eventModel.clear();
-                            for (var i = 0; i < filteredModel.count; i++) {
-                                cal.eventModel.append(filteredModel.get(i));
-                            }
-                            console.log(modelData)
-                        }
+                }
+            }
+        }
+
+        ListView {
+            id: eventListView
+            x: 0
+            y: 600
+            width: parent.width
+            height: 200 // Adjust width and height to suit your needs
+            model: cal.eventModel
+            delegate: Item {
+                width: eventListView.width
+                height: 50
+                Row {
+                    spacing: 10
+                    Text {
+                        text: "Event Name: " + model.eventName
+                        color: "white"
+                    }
+                    Text {
+                        text: "Event Type: " + model.eventType
+                        color: "white"
+                    }
+                    Text {
+                        text: "Start Time: " + model.startTime
+                        color: "white"
+                    }
+                    Text {
+                        text: "End Time: " + model.endTime
+                        color: "white"
                     }
                 }
+            }
+
+            SButton {
+                id: testEventButton // Rename this ID as per your convention
+                x: 92
+                y: 8
+                visible: true
+                text: "Create Test Event"
             }
         }
     }
 }
-

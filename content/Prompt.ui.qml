@@ -776,6 +776,32 @@ Rectangle {
             }
         }
     }
+    SButton {
+        id: createTestEvent
+        x: 1576
+        y: 400
+        visible: false
+        text: "Create Test Event"
+
+        Connections {
+            target: createTestEvent
+            onClicked: {
+                var testEventName = "July 4th Test Event";
+                var testEventType = "Festive";
+                var testEventDescription = "A test event for Independence Day.";
+                var startHour = "10"; // 10 AM
+                var startMinute = "00";
+                var endHour = "14"; // 2 PM
+                var endMinute = "00";
+                var eventDay = "4"; // July 4th
+                var eventMonth = "7"; // July
+                var eventYear = "2023";
+
+                cal.addEvent(testEventName, testEventType, testEventDescription, startHour, startMinute, endHour, endMinute, eventDay, eventMonth, eventYear);
+                cal.updateEventModel(Number(eventYear), Number(eventMonth)-1, Number(eventDay));
+            }
+        }
+    }
 
     SButton {
         id: testButton
@@ -952,6 +978,11 @@ Rectangle {
                 anchors.bottomMargin: 0
             }
 
+            PropertyChanges {
+                target: calendar
+                visible: false
+            }
+
         },
 
         State {
@@ -1081,6 +1112,8 @@ Rectangle {
 
             PropertyChanges {
                 target: calendar
+                x: 64
+                y: 74
                 visible: true
             }
 
@@ -1212,6 +1245,7 @@ Rectangle {
             PropertyChanges {
                 target: testButton
                 visible: true
+                text: "My Button"
             }
 
             PropertyChanges {
@@ -1389,6 +1423,11 @@ Rectangle {
                 state: ""
             }
 
+            PropertyChanges {
+                target: createTestEvent
+                visible: true
+            }
+
         }]
     ErrorMessage {
         id: errorMessage
@@ -1402,11 +1441,131 @@ Rectangle {
         y: 1097
     }
 
-    Calendar {
+    Rectangle {
         id: calendar
-        x: 61
-        y: 43
+        x: 0
+        y: 0
+        width: 1000
+        height: 600
         visible: false
+        color: "#3a3a3a"
+        border.color: "#5f5f5f"
+
+        CalendarButtons {
+            id: prevMonth
+            text: "Previous"
+            x: 23
+            y: 16
+            font.pointSize: 15
+            onClicked: cal.month = (cal.month > 0) ? cal.month - 1 : (cal.month == 0 ) ? (cal.year--, 11) : cal.month;
+        }
+
+        CalendarButtons {
+            id: nextMonth
+            text: "Next"
+            x: 875
+            y: 16
+            onClicked: cal.month = (cal.month < 11) ? cal.month + 1 : (cal.month == 11) ? (cal.year++, 0) : cal.month;
+        }
+
+        Text {
+            id: calendarTitle
+            text: cal.monthName + " - " + cal.year
+            font.bold: true
+            color: "#f7f7f7"
+            font.pixelSize: 50
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        Grid {
+            id: calendarGrid
+            x: 14
+            y: 17
+            topPadding: 50
+            verticalItemAlignment: Grid.AlignVCenter
+            horizontalItemAlignment: Grid.AlignHCenter
+            columns: 7
+            rows: 7
+            spacing: 6
+            anchors.verticalCenter: calendarTitle.verticalBottom
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Text {
+                id : sunday
+                text: "Sun"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+            Text {
+                id : monday
+                text: "Mon"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : tuesday
+                text: "Tue"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : wednesday
+                text: "Wed"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : thursday
+                text: "Thu"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : friday
+                text: "Fri"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            Text {
+                id : saturday
+                text: "Sat"
+                font.bold: true
+                color: "#f7f7f7"
+                font.pixelSize: 30
+            }
+
+            // Define the other days of the week
+
+            Repeater {
+                id : calendarRepeater
+                model: cal.daysInMonth + cal.dayOfWeek // or any number of days you want to show
+                Button {
+                    id: dayButton
+                    text: modelData - cal.dayOfWeek + 1
+                    opacity: (modelData - cal.dayOfWeek >= 0) ? true : false
+                    width: 130
+                    height: 70
+                    Connections {
+                        target: dayButton
+                        onClicked: {
+                        console.log("I was clicked")
+                        cal.printDayEvents(cal.eventModel, cal.year, cal.month, modelData - cal.dayOfWeek + 1)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

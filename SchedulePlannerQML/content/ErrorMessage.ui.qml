@@ -10,9 +10,12 @@ import QtQuick.Controls 2.15
 import QtQuick.Timeline 1.0
 
 Item {
-    id: item1
+    id: errorMessagePop
     width: 1920
     height: 1080
+    property alias messageText: errorText.text
+
+
     Rectangle {
         id: errorMessage
         color: "#343434"
@@ -24,7 +27,8 @@ Item {
 
         anchors.horizontalCenter: parent.horizontalCenter
         Text {
-            text: "Error: unsupported values."
+            id: errorText
+            text: qsTr("Error: Unsupported Values")
             color: "#c92f2f"
             anchors.centerIn: parent
             font.pointSize: 25
@@ -40,7 +44,7 @@ Item {
         animations: [
             TimelineAnimation {
                 id: errorPopUp
-                onFinished: item1.state = "hideError"
+                onFinished: errorMessagePop.state = "hideError"
                 running: false
                 loops: 1
                 duration: 3000

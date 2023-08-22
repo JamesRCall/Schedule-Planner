@@ -553,42 +553,55 @@ Rectangle {
             onClicked: {
                 if (eventName.text !== "" && eventTypeDropDown.currentIndex !== -1 && eventDescription.text !== "") {
 
-                    // Get the selected event type from the ComboBox
-                    var selectedEventType = eventTypeDropDown.model.get(eventTypeDropDown.currentIndex).key;
+                // Get the selected event type from the ComboBox
+                var selectedEventType = eventTypeDropDown.model.get(eventTypeDropDown.currentIndex).key;
 
-                    // Fetch month, day, and year from the tumblers
-                    var eventMonthVal = monthTumbler.currentIndex + 1; // +1 as month starts from 1 in real-world but index starts from 0.
-                    var eventDayVal = dayTumbler.currentIndex + 1; // +1 to make it human-readable day.
-                    var eventYearVal = yearTumbler.currentIndex + 2000; // from the previously defined property.
+                // Fetch month, day, and year from the tumblers
+                var eventMonthVal = monthTumbler.currentIndex + 1; // +1 as month starts from 1 in real-world but index starts from 0.
+                var eventDayVal = dayTumbler.currentIndex + 1; // +1 to make it human-readable day.
+                var eventYearVal = yearTumbler.currentIndex + 2000; // from the previously defined property.
 
-                    // Fetch start and end hours, minutes, and am/pm from tumblers
-                    var startHourVal = hoursTumbler.model.get(hoursTumbler.currentIndex).value;
-                    var startMinuteVal = minutesTumbler.currentIndex; // As model is from 0-59
-                    var startAmPmVal = amPmTumbler.model[amPmTumbler.currentIndex];
+                // Fetch start and end hours, minutes, and am/pm from tumblers
+                var startHourVal = hoursTumbler.model.get(hoursTumbler.currentIndex).value;
+                var startMinuteVal = minutesTumbler.currentIndex; // As model is from 0-59
+                var startAmPmVal = amPmTumbler.model[amPmTumbler.currentIndex];
 
-                    var endHourVal = hoursTumbler2.model.get(hoursTumbler2.currentIndex).value;
-                    var endMinuteVal = minutesTumbler2.currentIndex; // As model is from 0-59
-                    var endAmPmVal = amPmTumbler2.model[amPmTumbler2.currentIndex];
+                var endHourVal = hoursTumbler2.model.get(hoursTumbler2.currentIndex).value;
+                var endMinuteVal = minutesTumbler2.currentIndex; // As model is from 0-59
+                var endAmPmVal = amPmTumbler2.model[amPmTumbler2.currentIndex];
 
-                    // Convert 12-hour format to 24-hour format
-                    if (startAmPmVal === "PM" && startHourVal !== "12") {
-                        startHourVal = Number(startHourVal) + 12;
-                    } else if (startAmPmVal === "AM" && startHourVal === "12") {
-                        startHourVal = "0";
-                    }
+                // Convert 12-hour format to 24-hour format
+                if (startAmPmVal === "PM" && startHourVal !== "12") {
+                    startHourVal = Number(startHourVal) + 12;
+                } else if (startAmPmVal === "AM" && startHourVal === "12") {
+                    startHourVal = "0";
+                }
 
-                    if (endAmPmVal === "PM" && endHourVal !== "12") {
-                        endHourVal = Number(endHourVal) + 12;
-                    } else if (endAmPmVal === "AM" && endHourVal === "12") {
-                        endHourVal = "0";
-                    }
+                if (endAmPmVal === "PM" && endHourVal !== "12") {
+                    endHourVal = Number(endHourVal) + 12;
+                } else if (endAmPmVal === "AM" && endHourVal === "12") {
+                    endHourVal = "0";
+                }
 
-                    // Call the addEvent function with values from tumblers
-                    cal.addEvent(eventName.text, selectedEventType, eventDescription.text, startHourVal.toString(), startMinuteVal.toString(),
-                                  endHourVal.toString(), endMinuteVal.toString(), eventDayVal.toString(), eventMonthVal.toString(), eventYearVal.toString());;
+                // Calculate start and end times in minutes
+                var totalStartMinutes = Number(startHourVal) * 60 + Number(startMinuteVal);
+                var totalEndMinutes = Number(endHourVal) * 60 + Number(endMinuteVal);
+
+                // Check if end time is less than start time
+                if (totalEndMinutes <= totalStartMinutes) {
+                    errorMessage.messageText = "End time must be greater than start time.";
+                    errorMessage.state = "showError";
+                    return; // This stops execution of the following code if error condition is met
+                }
+
+                // Call the addEvent function with values from tumblers
+                cal.addEvent(eventName.text, selectedEventType, eventDescription.text, startHourVal.toString(), startMinuteVal.toString(),
+                              endHourVal.toString(), endMinuteVal.toString(), eventDayVal.toString(), eventMonthVal.toString(), eventYearVal.toString());
 
                 } else {
+                    errorMessage.messageText = "All fields are required.";
                     errorMessage.state = "showError";
+
                 }
             }
         }
@@ -1218,16 +1231,7 @@ Rectangle {
         height: 67
         visible: false
 
-        model: ListModel {
-            id: eventDropModel
-            ListElement { key: "Work"; value: "white" }
-            ListElement { key: "School"; value: "blue" }
-            ListElement { key: "Gym"; value: "yellow" }
-            ListElement { key: "Medical"; value: "green" }
-            ListElement { key: "Social"; value: "purple" }
-            ListElement { key: "Chore"; value: "orange" }
-            ListElement { key: "Exam"; value: "red" }
-        }
+        model: cal.eventDropModel
 
         contentItem: Text {
             id: eventDropDownText
@@ -1440,7 +1444,7 @@ Rectangle {
                                                 width: 9 // Width of the circle (double the radius)
                                                 height: 9 // Height of the circle (double the radius)
                                                 radius: 15
-                                                color: "#B2FCFB" // Set the color as per your requirement
+                                                color: cal.eventTypeColors[eventType] || "#B2FCFB" // If eventType doesn't match any key, it defaults to #B2FCFB // Set the color as per your requirement
                                                 x: 2
                                                 anchors.verticalCenter: parent.verticalCenter
                                             }
@@ -1944,6 +1948,7 @@ Rectangle {
 
                 }
                 Text {
+                    text: eventType
                     color: "#D3D3D3"
                     font.pixelSize: 10
                     anchors.left: parent.left
@@ -1995,5 +2000,6 @@ Rectangle {
 /*##^##
 Designer {
     D{i:0;annotation:"1 //;;//  //;;//  //;;// <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html> //;;// 1690254314";customId:""}
+D{i:295;invisible:true}
 }
 ##^##*/

@@ -29,6 +29,15 @@ Item {
                       "July", "August", "September", "October", "November", "December"];
         return months[backupmonth % 12];
     }
+    property var eventTypeColors: {
+        "Work": "white",
+        "School": "blue",
+        "Gym": "yellow",
+        "Medical": "green",
+        "Social": "purple",
+        "Chore": "orange",
+        "Exam": "red"
+    }
 
     property int dayOfWeek: new Date(year, month, 1).getDay()  // 0 (Sun) to 6 (Sat)
     property int test: 999
@@ -37,6 +46,17 @@ Item {
     property alias eventListModel: eventListModel
     ListModel {
         id: eventListModel
+    }
+    property alias eventDropModel: eventDropModel
+    ListModel {
+        id: eventDropModel
+        ListElement { key: "Work"; value: "white" }
+        ListElement { key: "School"; value: "blue" }
+        ListElement { key: "Gym"; value: "yellow" }
+        ListElement { key: "Medical"; value: "green" }
+        ListElement { key: "Social"; value: "purple" }
+        ListElement { key: "Chore"; value: "orange" }
+        ListElement { key: "Exam"; value: "red" }
     }
 
     ListModel {
@@ -194,6 +214,4 @@ Item {
 
         return hour + ":" + (minute < 10 ? "0" : "") + minute + " " + period;
     }
-
-
 }

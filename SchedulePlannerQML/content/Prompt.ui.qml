@@ -22,6 +22,7 @@ Rectangle {
     state: "Opening"
     scale: 1
 
+
     Cal {
         id: cal
     }
@@ -207,7 +208,7 @@ Rectangle {
         x: -278
         y: -1070
         width: 1393
-        height: 927
+        height: 945
         opacity: 0.107
         source: "images/hopefully.webp"
         fillMode: Image.PreserveAspectFit
@@ -540,109 +541,6 @@ Rectangle {
         placeholderTextColor: "#88e4e4e4"
         placeholderText: qsTr("Create Event Name")
     }
-
-    Rectangle {
-        id: eventDate
-        x: 850
-        y: 270
-        width: 75
-        height: 67
-        visible: false
-        color: "#737373"
-
-        TextField {
-            id: eventMonth
-            x: 40
-            y: 0
-            height: 67
-            width: 34
-            visible: false
-            color: "#ffffff"
-            validator: IntValidator {
-                bottom: 1
-                top: 12
-            }
-            placeholderText: qsTr("12")
-            background: Rectangle {
-                color: "#737373"
-            }
-            font.pointSize: 15
-            placeholderTextColor: "#88e4e4e4"
-        }
-
-
-        TextField {
-            id: eventDay
-            x: 2
-            y: 0
-            width: 34
-            height: 67
-            visible: false
-            color: "#ffffff"
-            validator: IntValidator {
-                bottom: 1
-                top: 31
-            }
-            placeholderText: qsTr("12")
-            background: Rectangle {
-                color: "#737373"
-            }
-            font.pointSize: 15
-            placeholderTextColor: "#88e4e4e4"
-        }
-
-        TextField {
-            id: eventYear
-            x: 80
-            y: 0
-            height: 67
-            width: 32
-            visible: false
-            color: "#ffffff"
-            validator: IntValidator {
-                bottom: 2000
-                top: 2200
-            }
-            placeholderText: qsTr("2000")
-            background: Rectangle {
-                color: "#737373"
-            }
-            font.pointSize: 15
-            placeholderTextColor: "#88e4e4e4"
-        }
-
-        Text {
-            id: eventSlash
-            x: 42
-            y: 0
-            width: 75
-            height: 67
-            color: "#88e4e4e4"
-            text: qsTr("/")
-            font.pixelSize: 20
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            bottomPadding: 6
-            font.bold: false
-        }
-
-        Text {
-            id: eventSlash2
-            x: 8
-            y: 0
-            width: 75
-            height: 67
-            color: "#88e4e4e4"
-            text: qsTr("/")
-            font.pixelSize: 20
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            bottomPadding: 6
-            font.bold: false
-            visible: false
-        }
-
-    }
     SButton {
         id: createEvent
         x: 1506
@@ -653,8 +551,15 @@ Rectangle {
         Connections {
             target: createEvent
             onClicked: {
-                if (eventName.text !== "" && eventType.text !== "" && eventDescription.text !== ""
-                        && eventMonth.acceptableInput && eventYear.acceptableInput && eventDay.acceptableInput) {
+                if (eventName.text !== "" && eventTypeDropDown.currentIndex !== -1 && eventDescription.text !== "") {
+
+                    // Get the selected event type from the ComboBox
+                    var selectedEventType = eventTypeDropDown.model.get(eventTypeDropDown.currentIndex).key;
+
+                    // Fetch month, day, and year from the tumblers
+                    var eventMonthVal = monthTumbler.currentIndex + 1; // +1 as month starts from 1 in real-world but index starts from 0.
+                    var eventDayVal = dayTumbler.currentIndex + 1; // +1 to make it human-readable day.
+                    var eventYearVal = yearTumbler.currentIndex + 2000; // from the previously defined property.
 
                     // Fetch start and end hours, minutes, and am/pm from tumblers
                     var startHourVal = hoursTumbler.model.get(hoursTumbler.currentIndex).value;
@@ -678,15 +583,17 @@ Rectangle {
                         endHourVal = "0";
                     }
 
-                    // Call the addEvent function
-                    cal.addEvent(eventName.text, eventType.text, eventDescription.text, startHourVal.toString(), startMinuteVal.toString(),
-                                  endHourVal.toString(), endMinuteVal.toString(), eventDay.text, eventMonth.text, eventYear.text);
+                    // Call the addEvent function with values from tumblers
+                    cal.addEvent(eventName.text, selectedEventType, eventDescription.text, startHourVal.toString(), startMinuteVal.toString(),
+                                  endHourVal.toString(), endMinuteVal.toString(), eventDayVal.toString(), eventMonthVal.toString(), eventYearVal.toString());;
+
                 } else {
                     errorMessage.state = "showError";
                 }
             }
         }
     }
+
     SButton {
         id: createTestEvent
         x: 1576
@@ -781,22 +688,6 @@ Rectangle {
         visible: false
         text: qsTr("Text")
         font.pixelSize: 30
-    }
-
-    TextField {
-        id: eventType
-        x: 1290
-        y: 270
-        width: 668
-        height: 70
-        visible: false
-        color: "#ffffff"
-        placeholderText: qsTr("Create Event Name")
-        background: Rectangle {
-            color: "#737373"
-        }
-        font.pointSize: 15
-        placeholderTextColor: "#88e4e4e4"
     }
 
 
@@ -1019,7 +910,6 @@ Rectangle {
                 target: sliderMenu
                 x: 1468
                 y: 8
-                visible: false
                 state: "Closed"
             }
 
@@ -1035,11 +925,6 @@ Rectangle {
             PropertyChanges {
                 target: goBackButton
                 visible: false
-            }
-
-            PropertyChanges {
-                target: eventDisplay
-                visible: true
             }
 
             PropertyChanges {
@@ -1219,45 +1104,6 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: eventDate
-                width: 139
-                height: 67
-                visible: true
-            }
-
-            PropertyChanges {
-                target: eventMonth
-                x: 6
-                y: 0
-                width: 34
-                height: 67
-                visible: true
-                horizontalAlignment: Text.AlignHCenter
-                placeholderText: qsTr("12")
-                rightPadding: 2
-            }
-
-            PropertyChanges {
-                target: eventYear
-                width: 58
-                height: 67
-                visible: true
-                horizontalAlignment: Text.AlignLeft
-                leftInset: 5
-                leftPadding: 5
-                rightPadding: 0
-            }
-
-            PropertyChanges {
-                target: eventSlash
-                width: 87
-                height: 67
-                rightPadding: 12
-                leftPadding: 0
-                topPadding: 2
-            }
-
-            PropertyChanges {
                 target: eventText
                 visible: true
                 color: "#ffffff"
@@ -1268,41 +1114,11 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: eventType
-                width: 200
-                height: 70
-                visible: true
-                placeholderText: qsTr("Event Type")
-            }
-
-            PropertyChanges {
                 target: eventTypeText
                 visible: true
                 color: "#ffffff"
                 text: qsTr("Event Type:")
                 verticalAlignment: Text.AlignVCenter
-            }
-
-            PropertyChanges {
-                target: eventSlash2
-                x: 12
-                y: 0
-                width: 67
-                height: 67
-                visible: true
-                topPadding: 2
-            }
-
-            PropertyChanges {
-                target: eventDay
-                x: 36
-                y: 0
-                width: 38
-                height: 67
-                visible: true
-                horizontalAlignment: Text.AlignRight
-                rightPadding: 0
-                placeholderText: qsTr("31")
             }
 
             PropertyChanges {
@@ -1352,7 +1168,7 @@ Rectangle {
             }
 
             PropertyChanges {
-                target: endTime2
+                target: endTimes2
                 x: 0
                 y: 0
                 width: 177
@@ -1375,6 +1191,17 @@ Rectangle {
                 wheelEnabled: true
             }
 
+            PropertyChanges {
+                target: eventTypeDropDown
+                visible: true
+
+            }
+
+            PropertyChanges {
+                target: dateTumbler
+                visible: true
+            }
+
 
         }]
     ErrorMessage {
@@ -1382,11 +1209,47 @@ Rectangle {
         x: 0
         y: 0
     }
+    ComboBox {
+        id: eventTypeDropDown
+        textRole: "key"
+        x: 1290
+        y: 270
+        width: 200
+        height: 67
+        visible: false
 
-    SliderMenu {
-        id: sliderMenu
-        x: -639
-        y: 1097
+        model: ListModel {
+            id: eventDropModel
+            ListElement { key: "Work"; value: "white" }
+            ListElement { key: "School"; value: "blue" }
+            ListElement { key: "Gym"; value: "yellow" }
+            ListElement { key: "Medical"; value: "green" }
+            ListElement { key: "Social"; value: "purple" }
+            ListElement { key: "Chore"; value: "orange" }
+            ListElement { key: "Exam"; value: "red" }
+        }
+
+        contentItem: Text {
+            id: eventDropDownText
+            text: eventTypeDropDown.displayText
+            color: "white"  // text color
+            verticalAlignment: Text.AlignVCenter
+            padding: 8
+            font.pointSize: 15
+        }
+
+        background: Rectangle {
+            color: "#737373"   // background color
+            border.color: "gray"
+        }
+
+        indicator: Image {
+            source: "images/DropDown.png"
+            height: 18
+            width: 30
+            x: 155
+            y: 26
+        }
     }
 
     Rectangle {
@@ -1509,11 +1372,11 @@ Rectangle {
                     opacity: (modelData - cal.dayOfWeek >= 0) ? true : false
                     background: Rectangle {
                         id: calendarButtonRectangle
-                        color: dayButton.pressed ? "#3d3d3d" : "#a2a2a2" // change color when pressed
+                        color: dayButton.pressed ? "#3d3d3d" : "#7A7A7A" // change color when pressed
                     }
                     Rectangle { // Or you can use Ellipse
                         id: textBackgroundCircle
-                        color: "#5A5A5A" // Set the color as per your requirement
+                        color: "#4A4A4A" // Set the color as per your requirement
                         width: 32 // Width of the circle (adjust as needed)
                         height: 32 // Height of the circle (adjust as needed)
                         radius: width / 2 // Make it a circle
@@ -1537,57 +1400,86 @@ Rectangle {
                         verticalAlignment: Text.AlignVCenter
                     }
                     ListView {
+                        id: eventListView
                         width: 130
                         height: 50
                         model: cal.eventListModel
                         enabled: false
                         y: 38
-                        spacing: 2
-                        delegate:
 
-                        Rectangle {
-                            visible: (eventDay === buttonDay && eventMonth === cal.month && eventYear === cal.year)
-                            width: parent.width - 6
-                            height: 15 // Adjust for desired padding
-                            color: "#5A5A5A" // Choose your desired background color
-                            radius: 4
-                            x: 3
-                            Rectangle {
-                                width: 9 // Width of the circle (double the radius)
-                                height: 9 // Height of the circle (double the radius)
-                                radius: 15
-                                color: "#B2FCFB" // Set the color as per your requirement
-                                x: 2
-                                anchors.verticalCenter: parent.verticalCenter
-                            }
+                        delegate: Rectangle {
+                            width: eventListView.width - 6
+                            height: (eventDay === buttonDay && eventMonth === cal.month && eventYear === cal.year) ? 17 : 0  // 17 is 15 (height of Rectangle) + 2 (spacing)
 
-                            Text {
-                                text: eventName
-                                color: "white"
-                                font.pixelSize: 10
-                                anchors.left: parent.left
-                                anchors.right: parent.right
-                                leftPadding: 15
-                                wrapMode: Text.WrapAnywhere
+                            color: "transparent"
 
+                            Item {
+                                width: parent.width
+                                height: parent.height
+
+
+
+                                Loader {
+                                    anchors.fill: parent
+                                    active: parent.height > 0
+
+                                    sourceComponent:
+                                        Rectangle {
+                                        width: parent.width
+                                        height: 17
+                                        x: 3
+                                        color: "transparent"
+
+                                        Rectangle {
+                                            width: parent.width
+                                            height: 15
+                                            color: "#4A4A4A" // Choose your desired background color
+                                            radius: 4
+
+                                            Rectangle {
+                                                width: 9 // Width of the circle (double the radius)
+                                                height: 9 // Height of the circle (double the radius)
+                                                radius: 15
+                                                color: "#B2FCFB" // Set the color as per your requirement
+                                                x: 2
+                                                anchors.verticalCenter: parent.verticalCenter
+                                            }
+
+                                            Text {
+                                                text: eventName
+                                                color: "white"
+                                                font.pixelSize: 10
+                                                anchors.left: parent.left
+                                                anchors.right: parent.right
+                                                leftPadding: 15
+                                                wrapMode: Text.WrapAnywhere
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
 
 
+
+
                     Connections {
                         target: dayButton
                         onClicked: {
-                            console.log("I was clicked")
-
                             cal.targetDay = modelData - cal.dayOfWeek + 1;
-                            console.log(cal.targetDay, cal.month, cal.year)
+                            cal.targetmonthName = cal.monthName
+
+                            cal.filterEventsByDate(cal.year, cal.month, cal.targetDay);
+                            console.log(dayButton.buttonDay)
+                            console.log(cal.day)
                         }
                     }
                 }
             }
         }
     }
+
 
     Item {
         id: startTimer
@@ -1710,6 +1602,7 @@ Rectangle {
 
     }
 
+
     Item {
         id: endTimer
         x: -7
@@ -1723,7 +1616,7 @@ Rectangle {
         }
 
         Rectangle {
-            id: endTime2
+            id: endTimes2
             x: -366
             y: -2
             width: 75
@@ -1866,6 +1759,136 @@ Rectangle {
         }
 
     }
+    Item {
+        id: dateTumbler
+        x: 850
+        y: 270
+        width: 191
+        height: 67
+        visible: false
+
+        FontMetrics {
+            id: fontMetrics2
+            font.pixelSize: 20
+        }
+        Rectangle {
+                   id: dateTimeRectangle
+                   width: parent.width
+                   height: parent.height
+                   color: "#737373"
+               }
+
+        Component {
+            id: dateDelegate
+            Item {
+                width: parent.width / 3
+                height: fontMetrics2.height * 2.5
+                Label {
+                    color: "#ffffff"
+                    text: modelData < 10 ? "0" + modelData : modelData
+                    font.pixelSize: fontMetrics2.font.pixelSize / 1.2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+            }
+        }
+
+        // Tumbler for Month
+        Tumbler {
+            id: monthTumbler
+            width: parent.width / 3
+            height: parent.height
+            currentIndex: cal.currentMonth
+            delegate: Item {
+                width: monthTumbler.width
+                height: fontMetrics1.height * 2.5
+                Label {
+                    color: "#ffffff"
+                    text: index + 1  // This will make the first item 2000, second 2001, and so on.
+                    font.pixelSize: fontMetrics1.font.pixelSize / 1.2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+            }
+            visibleItemCount: 2
+            model: 12  // Represents years from 2000 to 2050
+            onCurrentIndexChanged: cal.currentMonth = currentIndex;
+        }
+
+        // Tumbler for Day (up to 31 for simplicity, adjust if necessary)
+        Tumbler {
+            id: dayTumbler
+            width: parent.width / 3
+            height: parent.height
+            anchors.left: monthTumbler.right
+            currentIndex: cal.day - 1
+            delegate: Item {
+                width: dayTumbler.width
+                height: fontMetrics1.height * 2.5
+                Label {
+                    color: "#ffffff"
+                    text: index + 1  // Starts from 1 for the first day of any month
+                    font.pixelSize: fontMetrics1.font.pixelSize / 1.2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+            }
+            visibleItemCount: 2
+            model: cal.daysInCurrentMonth
+        }
+
+        // Tumbler for Year (starting at 2000)
+        Tumbler {
+            id: yearTumbler
+            width: parent.width / 3
+            height: parent.height
+            anchors.left: dayTumbler.right
+            currentIndex: cal.currentYear - 2000
+            delegate: Item {
+                width: yearTumbler.width
+                height: fontMetrics1.height * 2.5
+                Label {
+                    color: "#ffffff"
+                    text: index + 2000  // This will make the first item 2000, second 2001, and so on.
+                    font.pixelSize: fontMetrics1.font.pixelSize / 1.2
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                    anchors.centerIn: parent
+                }
+            }
+            visibleItemCount: 2
+            model: 101  // Represents years from 2000 to 2050
+            onCurrentIndexChanged: cal.currentYear = currentIndex;
+        }
+
+        Rectangle {
+            id: timerFade3
+            width: 191
+            height: 67
+            enabled: false
+            gradient: Gradient {
+                GradientStop {
+                    position: 0
+                    color: "#737373"
+                }
+
+                GradientStop {
+                    position: 0.5
+                    color: "#00000000"
+                }
+
+                GradientStop {
+                    position: 1
+                    color: "#737373"
+                }
+            }
+        }
+    }
+
+
     Rectangle {
         id: eventdayDisplay
         x: 1110
@@ -1877,7 +1900,7 @@ Rectangle {
         border.color: "#5f5f5f"
         Text {
             id: eventDayTitle
-            text: cal.monthName + " - " + cal.targetDay
+            text: cal.targetmonthName + " - " + cal.targetDay
             font.bold: true
             color: "#f7f7f7"
             font.pixelSize: 50
@@ -1888,15 +1911,14 @@ Rectangle {
             id: eventDisplay
             width: parent.width
             height: parent.height - 75
-            model: cal.eventListModel
+            model: cal.filteredEventModel
             y: 75
             spacing: 2
 
             delegate:
                 Rectangle {
-                visible: (eventDay === cal.targetDay && eventMonth === cal.month && eventYear === cal.year)
                 width: parent.width - 6
-                height: 50 // Adjust for desired padding
+                height: 80 // Adjust for desired padding
                 color: "#5A5A5A" // Choose your desired background color
                 radius: 4
                 x: 3
@@ -1904,12 +1926,52 @@ Rectangle {
                 Text {
                     text: eventName
                     color: "white"
+                    font.pixelSize: 16
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    leftPadding: 15
+                    wrapMode: Text.WrapAnywhere
+                }
+                Text {
+                    text: cal.formatTime(startTime) + " - " + cal.formatTime(endTime)
+                    color: "#D3D3D3"
                     font.pixelSize: 10
                     anchors.left: parent.left
                     anchors.right: parent.right
                     leftPadding: 15
                     wrapMode: Text.WrapAnywhere
+                    y: 18
 
+                }
+                Text {
+                    color: "#D3D3D3"
+                    font.pixelSize: 10
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    horizontalAlignment: Text.AlignRight
+                    rightPadding: 15
+                    wrapMode: Text.WrapAnywhere
+                    y: 18
+
+                }
+                Rectangle {
+                    width: parent.width - 8
+                    height: parent.height - 35
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    y: 32
+                    radius: 2
+                    color: "#4a4a4a"
+                    Text {
+                        text: eventDescription
+                        color: "white"
+                        font.pixelSize: 12
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        leftPadding: 15
+                        wrapMode: Text.WrapAnywhere
+
+
+                    }
                 }
             }
         }
@@ -1919,6 +1981,11 @@ Rectangle {
 
 
 
+    SliderMenu {
+        id: sliderMenu
+        x: -639
+        y: 1097
+    }
 }
 
 
@@ -1928,6 +1995,5 @@ Rectangle {
 /*##^##
 Designer {
     D{i:0;annotation:"1 //;;//  //;;//  //;;// <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html> //;;// 1690254314";customId:""}
-D{i:251}D{i:249}
 }
 ##^##*/

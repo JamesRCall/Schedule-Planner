@@ -22,7 +22,6 @@ Item {
 
         Text {
             id: text1
-            text: qsTr("Text")
             font.pixelSize: 12
         }
     }

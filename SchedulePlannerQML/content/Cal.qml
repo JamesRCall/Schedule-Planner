@@ -15,14 +15,24 @@ Item {
             return event.eventYear === buttonYear && event.eventMonth === buttonMonth && event.eventDay === buttonDay;
         });
     })();
+    property int currentYear: (new Date()).getFullYear()
+    property int currentMonth: (new Date()).getMonth()
+    property int daysInCurrentMonth: new Date(currentYear, currentMonth + 1, 0).getDate()
 
     property string monthName: {
         var months = ["January", "February", "March", "April", "May", "June",
                       "July", "August", "September", "October", "November", "December"];
         return months[month % 12];
     }
+    property string targetmonthName: {
+        var months = ["January", "February", "March", "April", "May", "June",
+                      "July", "August", "September", "October", "November", "December"];
+        return months[backupmonth % 12];
+    }
+
     property int dayOfWeek: new Date(year, month, 1).getDay()  // 0 (Sun) to 6 (Sat)
     property int test: 999
+    property alias filteredEventModel: filteredEventModel
 
     property alias eventListModel: eventListModel
     ListModel {
@@ -32,6 +42,10 @@ Item {
     ListModel {
         id: filteredEventModel
     }
+    function getDaysInMonth(year, month) {
+        return new Date(year, month + 1, 0).getDate();
+    }
+
 
     function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year) {
         console.log("Adding event:", name, type, description, startHour, startMinute, endHour, endMinute, day, month, year);
@@ -57,6 +71,8 @@ Item {
         eventListModel.append(newEvent);
 
         console.log("Event added to the model.");
+        console.log("Number of items in eventListModel:", eventListModel.count);
+
     }
     function filterEventsByDate(year, month, day) {
         console.log("Filtering events for date:", year, month, day);
@@ -73,8 +89,6 @@ Item {
                 console.log("Added event:", event.eventName, "at index", i, "to filteredEventModel. Current count:", filteredEventModel.count);
             }
         }
-
-        console.log("Finished filtering. Events added to filteredEventModel:", eventsAdded);
     }
 
 
@@ -163,6 +177,22 @@ Item {
             }
         }
         return false;
+    }
+    function formatTime(minutes) {
+        var hour = Math.floor(minutes / 60);
+        var minute = minutes % 60;
+        var period = "am";
+
+        if (hour >= 12) {
+            if (hour > 12) {
+                hour -= 12;
+            }
+            period = "pm";
+        } else if (hour === 0) {
+            hour = 12;
+        }
+
+        return hour + ":" + (minute < 10 ? "0" : "") + minute + " " + period;
     }
 
 

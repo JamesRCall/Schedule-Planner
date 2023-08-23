@@ -23,6 +23,7 @@ Rectangle {
     scale: 1
 
 
+
     Cal {
         id: cal
     }
@@ -511,7 +512,10 @@ Rectangle {
 
         Connections {
             target: goBackButton
-            onClicked: background.state = "MainMenu"
+            onClicked: {
+                cal.populateMonthListModel(cal.month, cal.year);
+                background.state = "MainMenu"
+            }
         }
     }
 
@@ -562,6 +566,7 @@ Rectangle {
 
                 // Get the selected event type from the ComboBox
                 var selectedEventType = eventTypeDropDown.model.get(eventTypeDropDown.currentIndex).key;
+                var reccurence = repeatEventDropDown.model.get(repeatEventDropDown.currentIndex).key;
 
                 // Fetch month, day, and year from the tumblers
                 var eventMonthVal = monthTumbler.currentIndex + 1; // +1 as month starts from 1 in real-world but index starts from 0.
@@ -603,7 +608,7 @@ Rectangle {
 
                 // Call the addEvent function with values from tumblers
                 cal.addEvent(eventName.text, selectedEventType, eventDescription.text, startHourVal.toString(), startMinuteVal.toString(),
-                              endHourVal.toString(), endMinuteVal.toString(), eventDayVal.toString(), eventMonthVal.toString(), eventYearVal.toString());
+                              endHourVal.toString(), endMinuteVal.toString(), eventDayVal.toString(), eventMonthVal.toString(), eventYearVal.toString(), reccurence.toString());
 
                 } else {
                     errorMessage.messageText = "All fields are required.";
@@ -713,13 +718,15 @@ Rectangle {
 
     Text {
         id: eventTypeText
-        x: 1110
+        x: 1104
         y: 270
         width: 150
         height: 67
         visible: false
-        text: qsTr("Text")
         font.pixelSize: 30
+        color: "#ffffff"
+        text: qsTr("Event Type:")
+        verticalAlignment: Text.AlignVCenter
     }
 
 
@@ -1065,7 +1072,7 @@ Rectangle {
                 target: eventName
                 x: 40
                 y: 170
-                width: 1450
+                width: 1075
                 height: 70
                 visible: true
             }
@@ -1107,6 +1114,10 @@ Rectangle {
 
             PropertyChanges {
                 target: endText
+                x: 407
+                y: 270
+                width: 141
+                height: 67
                 visible: true
                 color: "#ffffff"
                 text: qsTr("End Time:")
@@ -1118,6 +1129,8 @@ Rectangle {
 
             PropertyChanges {
                 target: eventText
+                x: 773
+                y: 270
                 visible: true
                 color: "#ffffff"
                 text: qsTr("Date:")
@@ -1129,7 +1142,6 @@ Rectangle {
             PropertyChanges {
                 target: eventTypeText
                 visible: true
-                color: "#ffffff"
                 text: qsTr("Event Type:")
                 verticalAlignment: Text.AlignVCenter
             }
@@ -1175,7 +1187,7 @@ Rectangle {
 
             PropertyChanges {
                 target: endTimer
-                x: 560
+                x: 562
                 y: 270
                 visible: true
             }
@@ -1206,15 +1218,35 @@ Rectangle {
 
             PropertyChanges {
                 target: eventTypeDropDown
+                x: 1290
+                y: 270
                 visible: true
 
             }
 
             PropertyChanges {
                 target: dateTumbler
+                x: 874
+                y: 270
                 visible: true
             }
 
+            PropertyChanges {
+                target: repeatText
+                x: 1156
+                y: 173
+                width: 107
+                height: 67
+                visible: true
+                text: qsTr("Repeat:")
+            }
+
+            PropertyChanges {
+                target: repeatEventDropDown
+                x: 1290
+                y: 170
+                visible: true
+            }
 
         },
         State {
@@ -2021,6 +2053,7 @@ Rectangle {
                         target: eventDisplayButton
                         onClicked: {
                             cal.deleteEvent(eventID);
+                            cal.populateMonthListModel(cal.month, cal.year);
                         }
                     }
                 }
@@ -2033,6 +2066,50 @@ Rectangle {
 
 
 
+
+    Text {
+        id: repeatText
+        x: 1106
+        y: 272
+        width: 150
+        height: 67
+        visible: false
+        color: "#ffffff"
+        text: qsTr("Repeat:")
+        font.pixelSize: 30
+        verticalAlignment: Text.AlignVCenter
+    }
+
+
+    ComboBox {
+        id: repeatEventDropDown
+        x: 1646
+        y: 270
+        width: 200
+        height: 70
+        visible: false
+        background: Rectangle {
+            color: "#737373"
+            border.color: "#808080"
+        }
+        indicator: Image {
+            x: 155
+            y: 26
+            width: 30
+            height: 18
+            source: "images/DropDown.png"
+        }
+        textRole: "key"
+        contentItem: Text {
+            id: repeatEventText
+            color: "#ffffff"
+            text: repeatEventDropDown.displayText
+            verticalAlignment: Text.AlignVCenter
+            font.pointSize: 15
+            padding: 8
+        }
+        model: cal.repeatDropModel
+    }
     SliderMenu {
         id: sliderMenu
         x: -639
@@ -2047,6 +2124,6 @@ Rectangle {
 /*##^##
 Designer {
     D{i:0;annotation:"1 //;;//  //;;//  //;;// <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html> //;;// 1690254314";customId:""}
-D{i:304;invisible:true}
+D{i:306}D{i:307}D{i:311;invisible:true}
 }
 ##^##*/

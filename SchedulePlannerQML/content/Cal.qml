@@ -39,8 +39,6 @@ Item {
         "Exam": "red"
     }
 
-
-
     property int dayOfWeek: new Date(year, month, 1).getDay()  // 0 (Sun) to 6 (Sat)
     property int test: 999
 
@@ -69,6 +67,17 @@ Item {
         ListElement { key: "Social"; value: "purple" }
         ListElement { key: "Chore"; value: "orange" }
         ListElement { key: "Exam"; value: "red" }
+    }
+
+    property alias repeatDropModel: repeatDropModel
+    ListModel {
+        id: repeatDropModel
+        ListElement { key: "Never"; }
+        ListElement { key: "Annually"; }
+        ListElement { key: "Monthly";}
+        ListElement { key: "Bi-weekly";}
+        ListElement { key: "Weekly";}
+        ListElement { key: "Daily";}
     }
     Component.onCompleted: {
         for (var i = 0; i < defaultEvents.defaultEventList.count; i++) {
@@ -118,7 +127,7 @@ Item {
         return new Date(year, month + 1, 0).getDate();
     }
 
-    function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year, recurrence = "Weekly") {
+    function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year, recurrence = "Never") {
         console.log("Adding event:", name, type, description, startHour, startMinute, endHour, endMinute, day, month, year);
 
         var startTime = Number(startHour) * 60 + Number(startMinute);
@@ -144,9 +153,6 @@ Item {
         eventListModel.append(newEvent);
 
         // After adding the event, check if it should also be added to monthListModel for the current month/year
-        if (shouldAddToMonthListModel(newEvent, month, year)) {
-            monthListModel.append(newEvent);
-        }
 
         console.log("Event added to the model.");
         console.log("Number of items in eventListModel:", eventListModel.count);
@@ -245,6 +251,14 @@ Item {
                 break; // Exit the loop since we found and deleted the event
             }
         }
+        for (var k = 0; k < monthListModel.count; k++) {
+            if (monthListModel.get(k).eventID === targetID) {
+                monthListModel.remove(k);
+                console.log("Event with ID:", targetID, "has been deleted from filteredEventModel.");
+                isDeleted = true;
+                break; // Exit the loop since we found and deleted the event
+            }
+        }
 
         if (!isDeleted) {
             console.log("Event with ID:", targetID, "not found in either model.");
@@ -278,7 +292,7 @@ Item {
             var event = eventListModel.get(i);
 
             switch (event.recurrence) {
-                case "none":
+                case "Never":
                     if (event.eventMonth === targetMonth && event.eventYear === targetYear) {
                         monthListModel.append(event);
                     }
@@ -323,72 +337,4 @@ Item {
             }
         }
     }
-
-    function shouldAddToMonthListModel(event, targetMonth, targetYear) {
-        var occurringDays = [];
-
-        // Helper function to get the number of days in a given month and year
-        function daysInMonth(month, year) {
-            return new Date(year, month + 1, 0).getDate();
-        }
-
-        var targetDays = daysInMonth(targetMonth, targetYear);
-
-        switch (event.recurrence) {
-            case "none":
-                if (event.eventMonth === targetMonth && event.eventYear === targetYear) {
-                    occurringDays.push(event.eventDay);
-                }
-                break;
-
-            case "Annually":
-                if (event.eventMonth === targetMonth) {
-                    occurringDays.push(event.eventDay);
-                }
-                break;
-
-            case "Monthly":
-                for (var day = 1; day <= targetDays; day++) {
-                    occurringDays.push(day);
-                }
-                break;
-
-            case "Bi-weekly":
-                var biWeekDate = new Date(targetYear, targetMonth, 1); // Set to the beginning of the target month/year
-                var daysSinceFirstEvent = (biWeekDate - new Date(event.eventYear, event.eventMonth, event.eventDay)) / (1000 * 60 * 60 * 24);
-                var offset = daysSinceFirstEvent % 14;
-
-                biWeekDate.setDate(biWeekDate.getDate() - offset); // Adjust based on the number of days since the first event
-
-                while (biWeekDate.getMonth() === targetMonth) {
-                    occurringDays.push(biWeekDate.getDate());
-                    biWeekDate.setDate(biWeekDate.getDate() + 14);
-                }
-                break;
-
-            case "Weekly":
-                var weekDate = new Date(targetYear, targetMonth, 1); // Set to the beginning of the target month/year
-                while (weekDate.getDay() !== new Date(event.eventYear, event.eventMonth, event.eventDay).getDay()) {
-                    weekDate.setDate(weekDate.getDate() + 1); // Adjust to match the day of the week of the first event
-                }
-
-                while (weekDate.getMonth() === targetMonth) {
-                    occurringDays.push(weekDate.getDate());
-                    weekDate.setDate(weekDate.getDate() + 7);
-                }
-                break;
-
-            case "Daily":
-                for (var dailyDay = 1; dailyDay <= targetDays; dailyDay++) {
-                    if (new Date(targetYear, targetMonth, dailyDay) >= new Date(event.eventYear, event.eventMonth, event.eventDay)) {
-                        occurringDays.push(dailyDay);
-                    }
-                }
-                break;
-        }
-
-        return occurringDays;
-    }
-
-
 }

@@ -39,14 +39,26 @@ Item {
         "Exam": "red"
     }
 
+
+
     property int dayOfWeek: new Date(year, month, 1).getDay()  // 0 (Sun) to 6 (Sat)
     property int test: 999
-    property alias filteredEventModel: filteredEventModel
 
     property alias eventListModel: eventListModel
     ListModel {
         id: eventListModel
     }
+
+    property alias filteredEventModel: filteredEventModel
+    ListModel {
+        id: filteredEventModel
+    }
+
+    property alias monthListModel: monthListModel
+    ListModel {
+        id: monthListModel
+    }
+
     property alias eventDropModel: eventDropModel
     ListModel {
         id: eventDropModel
@@ -58,16 +70,55 @@ Item {
         ListElement { key: "Chore"; value: "orange" }
         ListElement { key: "Exam"; value: "red" }
     }
-
-    ListModel {
-        id: filteredEventModel
+    Component.onCompleted: {
+        for (var i = 0; i < defaultEvents.defaultEventList.count; i++) {
+            var event = defaultEvents.defaultEventList.get(i);
+            if (!eventExists(event.eventID)) {
+                eventListModel.append({
+                    eventID: event.eventID,
+                    eventName: event.eventName,
+                    eventType: event.eventType,
+                    eventDescription: event.eventDescription,
+                    startTime: event.startTime,
+                    endTime: event.endTime,
+                    eventDay: event.eventDay,
+                    eventMonth: event.eventMonth,
+                    eventYear: event.eventYear,
+                    recurrence: event.recurrence
+                });
+            }
+        }
+        populateMonthListModel(month, year);
     }
+
+
+    function eventExists(eventID) {
+        for (var i = 0; i < eventListModel.count; i++) {
+            if (eventListModel.get(i).eventID === eventID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    DefaultEvents {
+        id: defaultEvents
+    }
+
+    // Unique ID tracker
+    property int currentID: 100000;
+
+    // Function to get a new unique ID
+    function getNewID() {
+        currentID += 1;
+        return currentID;
+    }
+
     function getDaysInMonth(year, month) {
         return new Date(year, month + 1, 0).getDate();
     }
 
-
-    function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year) {
+    function addEvent(name, type, description, startHour, startMinute, endHour, endMinute, day, month, year, recurrence = "Weekly") {
         console.log("Adding event:", name, type, description, startHour, startMinute, endHour, endMinute, day, month, year);
 
         var startTime = Number(startHour) * 60 + Number(startMinute);
@@ -76,6 +127,7 @@ Item {
         console.log("Converted times:", startTime, endTime);
 
         var newEvent = {
+            "eventID": getNewID(),  // Assigning the unique ID here
             "eventName": name,
             "eventType": type,
             "eventDescription": description,
@@ -83,17 +135,24 @@ Item {
             "endTime": endTime,
             "eventDay": Number(day),
             "eventMonth": Number(month) - 1,
-            "eventYear": Number(year)
+            "eventYear": Number(year),
+            "recurrence": recurrence
         };
 
         console.log("New event object:", JSON.stringify(newEvent));
 
         eventListModel.append(newEvent);
 
+        // After adding the event, check if it should also be added to monthListModel for the current month/year
+        if (shouldAddToMonthListModel(newEvent, month, year)) {
+            monthListModel.append(newEvent);
+        }
+
         console.log("Event added to the model.");
         console.log("Number of items in eventListModel:", eventListModel.count);
-
     }
+
+
     function filterEventsByDate(year, month, day) {
         console.log("Filtering events for date:", year, month, day);
 
@@ -101,57 +160,14 @@ Item {
         console.log("Cleared filteredEventModel. Current count:", filteredEventModel.count);
 
         var eventsAdded = 0;
-        for (var i = 0; i < eventListModel.count; i++) {
-            var event = eventListModel.get(i);
+        for (var i = 0; i < monthListModel.count; i++) {
+            var event = monthListModel.get(i);
             if (event.eventYear === year && event.eventMonth === month && event.eventDay === day) {
                 filteredEventModel.append(event);
                 eventsAdded++;
                 console.log("Added event:", event.eventName, "at index", i, "to filteredEventModel. Current count:", filteredEventModel.count);
             }
         }
-    }
-
-
-    function createModelWithEmptyCells(events) {
-        events.sort(function (a, b) {
-            return a.startTime - b.startTime;
-        });
-
-        var modelData = [];
-        var lastEndTime = 0;
-
-        events.forEach(function (event) {
-            if (event.startTime > lastEndTime) {
-                modelData.push({
-                    hasEvent: false,
-                    startTime: lastEndTime,
-                    endTime: event.startTime
-                });
-            }
-            modelData.push({
-                hasEvent: true,
-                eventName: event.eventName,
-                eventType: event.eventType,
-                eventDescription: event.eventDescription,
-                startTime: event.startTime,
-                endTime: event.endTime,
-                eventDay: event.eventDay,
-                eventMonth: event.eventMonth,
-                eventYear: event.eventYear
-            });
-            lastEndTime = event.endTime;
-        });
-
-        // Add an empty cell at the end
-        if (lastEndTime < 24 * 60) {  // endTime is in minutes, so it should be less than 24*60, not 24.
-            modelData.push({
-                hasEvent: false,
-                startTime: lastEndTime,
-                endTime: 24 * 60
-            });
-        }
-
-        return modelData;
     }
 
     function printModelContents(model) {
@@ -189,15 +205,7 @@ Item {
         }
         console.log("=== End of model contents ===");
     }
-    function containsEventForDate(targetYear, targetMonth, targetDay) {
-        for (var i = 0; i < eventListModel.count; i++) {
-            var event = eventListModel.get(i);
-            if (event.eventYear === targetYear && event.eventMonth === targetMonth && event.eventDay === targetDay) {
-                return true;
-            }
-        }
-        return false;
-    }
+
     function formatTime(minutes) {
         var hour = Math.floor(minutes / 60);
         var minute = minutes % 60;
@@ -214,4 +222,173 @@ Item {
 
         return hour + ":" + (minute < 10 ? "0" : "") + minute + " " + period;
     }
+    function deleteEvent(targetID) {
+        // Flag to indicate if event is found and deleted
+        var isDeleted = false;
+
+        // Search eventListModel
+        for (var i = 0; i < eventListModel.count; i++) {
+            if (eventListModel.get(i).eventID === targetID) {
+                eventListModel.remove(i);
+                console.log("Event with ID:", targetID, "has been deleted from eventListModel.");
+                isDeleted = true;
+                break; // Exit the loop since we found and deleted the event
+            }
+        }
+
+        // Search filteredEventModel
+        for (var j = 0; j < filteredEventModel.count; j++) {
+            if (filteredEventModel.get(j).eventID === targetID) {
+                filteredEventModel.remove(j);
+                console.log("Event with ID:", targetID, "has been deleted from filteredEventModel.");
+                isDeleted = true;
+                break; // Exit the loop since we found and deleted the event
+            }
+        }
+
+        if (!isDeleted) {
+            console.log("Event with ID:", targetID, "not found in either model.");
+        }
+    }
+    function populateMonthListModel(targetMonth, targetYear) {
+        monthListModel.clear();
+
+        function daysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        var targetDays = daysInMonth(targetMonth, targetYear);
+
+        function createEventObject(event, day, month, year) {
+            return {
+                "eventID": event.eventID,
+                "eventName": event.eventName,
+                "eventType": event.eventType,
+                "eventDescription": event.eventDescription,
+                "startTime": event.startTime,
+                "endTime": event.endTime,
+                "eventDay": day,
+                "eventMonth": month,
+                "eventYear": year,
+                "recurrence": event.recurrence
+            };
+        }
+
+        for (var i = 0; i < eventListModel.count; i++) {
+            var event = eventListModel.get(i);
+
+            switch (event.recurrence) {
+                case "none":
+                    if (event.eventMonth === targetMonth && event.eventYear === targetYear) {
+                        monthListModel.append(event);
+                    }
+                    break;
+
+                case "Annually":
+                    if (event.eventMonth === targetMonth) {
+                        monthListModel.append(createEventObject(event, event.eventDay, targetMonth, targetYear));
+                    }
+                    break;
+
+                case "Monthly":
+                    monthListModel.append(createEventObject(event, event.eventDay, targetMonth, targetYear));
+                    break;
+
+                case "Bi-weekly":
+                    var startDate = new Date(event.eventYear, event.eventMonth, event.eventDay);
+                    while (startDate <= new Date(targetYear, targetMonth + 1, 0)) {
+                        if (startDate.getMonth() === targetMonth && startDate.getFullYear() === targetYear) {
+                            monthListModel.append(createEventObject(event, startDate.getDate(), targetMonth, targetYear));
+                        }
+                        startDate.setDate(startDate.getDate() + 14);
+                    }
+                    break;
+
+
+                case "Weekly":
+                    var startWeeklyDate = new Date(event.eventYear, event.eventMonth, event.eventDay);
+                    while (startWeeklyDate <= new Date(targetYear, targetMonth + 1, 0)) {
+                        if (startWeeklyDate.getMonth() === targetMonth && startWeeklyDate.getFullYear() === targetYear) {
+                            monthListModel.append(createEventObject(event, startWeeklyDate.getDate(), targetMonth, targetYear));
+                        }
+                        startWeeklyDate.setDate(startWeeklyDate.getDate() + 7);
+                    }
+                    break;
+
+                case "Daily":
+                    for (var dailyDay = 1; dailyDay <= targetDays; dailyDay++) {
+                        monthListModel.append(createEventObject(event, dailyDay, targetMonth, targetYear));
+                    }
+                    break;
+            }
+        }
+    }
+
+    function shouldAddToMonthListModel(event, targetMonth, targetYear) {
+        var occurringDays = [];
+
+        // Helper function to get the number of days in a given month and year
+        function daysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        var targetDays = daysInMonth(targetMonth, targetYear);
+
+        switch (event.recurrence) {
+            case "none":
+                if (event.eventMonth === targetMonth && event.eventYear === targetYear) {
+                    occurringDays.push(event.eventDay);
+                }
+                break;
+
+            case "Annually":
+                if (event.eventMonth === targetMonth) {
+                    occurringDays.push(event.eventDay);
+                }
+                break;
+
+            case "Monthly":
+                for (var day = 1; day <= targetDays; day++) {
+                    occurringDays.push(day);
+                }
+                break;
+
+            case "Bi-weekly":
+                var biWeekDate = new Date(targetYear, targetMonth, 1); // Set to the beginning of the target month/year
+                var daysSinceFirstEvent = (biWeekDate - new Date(event.eventYear, event.eventMonth, event.eventDay)) / (1000 * 60 * 60 * 24);
+                var offset = daysSinceFirstEvent % 14;
+
+                biWeekDate.setDate(biWeekDate.getDate() - offset); // Adjust based on the number of days since the first event
+
+                while (biWeekDate.getMonth() === targetMonth) {
+                    occurringDays.push(biWeekDate.getDate());
+                    biWeekDate.setDate(biWeekDate.getDate() + 14);
+                }
+                break;
+
+            case "Weekly":
+                var weekDate = new Date(targetYear, targetMonth, 1); // Set to the beginning of the target month/year
+                while (weekDate.getDay() !== new Date(event.eventYear, event.eventMonth, event.eventDay).getDay()) {
+                    weekDate.setDate(weekDate.getDate() + 1); // Adjust to match the day of the week of the first event
+                }
+
+                while (weekDate.getMonth() === targetMonth) {
+                    occurringDays.push(weekDate.getDate());
+                    weekDate.setDate(weekDate.getDate() + 7);
+                }
+                break;
+
+            case "Daily":
+                for (var dailyDay = 1; dailyDay <= targetDays; dailyDay++) {
+                    if (new Date(targetYear, targetMonth, dailyDay) >= new Date(event.eventYear, event.eventMonth, event.eventDay)) {
+                        occurringDays.push(dailyDay);
+                    }
+                }
+                break;
+        }
+
+        return occurringDays;
+    }
+
+
 }

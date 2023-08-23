@@ -138,6 +138,8 @@ Rectangle {
                     height: 500
                     x: positionx
                     y: positiony
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    horizontalAlignment: Text.AlignHCenter
                     color: "#f7f7f7"
                     font.pixelSize: 70
                     text: name
@@ -174,28 +176,28 @@ Rectangle {
         }
         model: ListModel {
             ListElement {
-                name: "Create Event"
+                name: "Hone Health"
                 positionx: 15
                 positiony: 550
                 imagesource: "images/createimage1.webp"
             }
 
             ListElement {
-                name: "Create Event"
+                name: "Get Goals"
                 positionx: 15
                 positiony: 550
                 imagesource: "images/createimage2.webp"
             }
 
             ListElement {
-                name: "Create Event"
+                name: "Event Entry"
                 positionx: 15
                 positiony: 550
                 imagesource: "images/createimage3.webp"
             }
 
             ListElement {
-                name: "Create Event"
+                name: "Ai Add"
                 positionx: 15
                 positiony: 550
                 imagesource: "images/createimage4.webp"
@@ -515,10 +517,15 @@ Rectangle {
 
     Text {
         id: eventTitle
-        x: 1305
-        y: -265
-        text: "Create Event "
-        font.pixelSize: 12
+        x: 530
+        y: 41
+        width: 860
+        height: 110
+        color: "#ffffff"
+        font.pixelSize: 70
+        visible: false
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
     }
     ListModel {
         id: listModel
@@ -1026,15 +1033,8 @@ Rectangle {
 
             PropertyChanges {
                 target: eventTitle
-                x: 530
-                y: 41
-                width: 860
-                height: 110
-                color: "#ffffff"
-                text: qsTr("Create Event")
-                font.pixelSize: 70
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
+                visible: true
+                text: qsTr("Create Events")
             }
 
             PropertyChanges {
@@ -1216,6 +1216,20 @@ Rectangle {
             }
 
 
+        },
+        State {
+            name: "State1"
+
+            PropertyChanges {
+                target: eventTitle
+                visible: true
+                text: qsTr("Create Goals")
+            }
+
+            PropertyChanges {
+                target: goBackButton
+                visible: true
+            }
         }]
     ErrorMessage {
         id: errorMessage
@@ -1272,7 +1286,12 @@ Rectangle {
             x: 23
             y: 16
             font.pointSize: 15
-            onClicked: cal.month = (cal.month > 0) ? cal.month - 1 : (cal.month == 0 ) ? (cal.year--, 11) : cal.month;
+            Connections {
+                onClicked: {
+                    cal.month = (cal.month > 0) ? cal.month - 1 : (cal.month == 0 ) ? (cal.year--, 11) : cal.month;
+                    cal.populateMonthListModel(cal.month, cal.year)
+                }
+            }
         }
 
         CalendarButtons {
@@ -1280,7 +1299,12 @@ Rectangle {
             text: "Next"
             x: 875
             y: 16
-            onClicked: cal.month = (cal.month < 11) ? cal.month + 1 : (cal.month == 11) ? (cal.year++, 0) : cal.month;
+            Connections {
+                onClicked: {
+                    cal.month = (cal.month < 11) ? cal.month + 1 : (cal.month == 11) ? (cal.year++, 0) : cal.month;
+                    cal.populateMonthListModel(cal.month, cal.year)
+                }
+            }
         }
 
         Text {
@@ -1407,7 +1431,7 @@ Rectangle {
                         id: eventListView
                         width: 130
                         height: 50
-                        model: cal.eventListModel
+                        model: cal.monthListModel
                         enabled: false
                         y: 38
 
@@ -1464,9 +1488,6 @@ Rectangle {
                             }
                         }
                     }
-
-
-
 
                     Connections {
                         target: dayButton
@@ -1590,6 +1611,7 @@ Rectangle {
             anchors.left: minutesTumbler.right
             visibleItemCount: 2
             wheelEnabled: true
+            currentIndex: 1
         }
         Rectangle {
             id: timerFade
@@ -1668,6 +1690,7 @@ Rectangle {
             enabled: true
             delegate: numberDelegate1
             visibleItemCount: 2
+            currentIndex: 1
             model: ListModel {
                 ListElement {
                     value: "1"
@@ -1737,6 +1760,7 @@ Rectangle {
             delegate: amPmDelegate1
             visibleItemCount: 2
             model: ["AM", "PM"]
+            currentIndex: 1
         }
 
         Rectangle {
@@ -1978,6 +2002,29 @@ Rectangle {
 
                     }
                 }
+                Button {
+                    id: eventDisplayButton
+                    text: "x"
+                    x: 393
+                    y: -9
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+                    contentItem: Text {
+                        text: eventDisplayButton.text
+                        color: "#d75757"
+                        font.pixelSize: 12
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    Connections {
+                        target: eventDisplayButton
+                        onClicked: {
+                            cal.deleteEvent(eventID);
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -2000,6 +2047,6 @@ Rectangle {
 /*##^##
 Designer {
     D{i:0;annotation:"1 //;;//  //;;//  //;;// <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\np, li { white-space: pre-wrap; }\nhr { height: 1px; border-width: 0; }\nli.unchecked::marker { content: \"\\2610\"; }\nli.checked::marker { content: \"\\2612\"; }\n</style></head><body style=\" font-family:'Segoe UI'; font-size:9pt; font-weight:400; font-style:normal;\">\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html> //;;// 1690254314";customId:""}
-D{i:295;invisible:true}
+D{i:304;invisible:true}
 }
 ##^##*/

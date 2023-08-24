@@ -983,8 +983,8 @@ extern const QQmlPrivate::TypedFunction aotBuiltFunctions[] = {
 Q_UNUSED(aotContext)
 Q_UNUSED(argumentsPtr)
 // expression for horizontalCenter at line 28, column 9
-QVariant r2_2;
 QObject *r2_1;
+QVariant r2_2;
 // generate_LoadQmlContextPropertyLookup
 while (!aotContext->loadScopeObjectPropertyLookup(0, &r2_1)) {
 aotContext->setInstructionPointer(2);
@@ -1030,8 +1030,8 @@ Q_UNUSED(aotContext)
 Q_UNUSED(argumentsPtr)
 // expression for onFinished at line 47, column 17
 QObject *r7_1;
-QString r2_2;
 QObject *r2_1;
+QString r2_2;
 // generate_CreateCallContext
 {
 // generate_LoadQmlContextPropertyLookup

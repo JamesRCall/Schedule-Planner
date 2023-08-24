@@ -10,11 +10,6 @@ Item {
     property int daysInMonth: {
         return new Date(year, month+1, 0).getDate()
     }
-    property var filteredEvents: (function() {
-        return eventListModel.filter(function(event) {
-            return event.eventYear === buttonYear && event.eventMonth === buttonMonth && event.eventDay === buttonDay;
-        });
-    })();
     property int currentYear: (new Date()).getFullYear()
     property int currentMonth: (new Date()).getMonth()
     property int daysInCurrentMonth: new Date(currentYear, currentMonth + 1, 0).getDate()

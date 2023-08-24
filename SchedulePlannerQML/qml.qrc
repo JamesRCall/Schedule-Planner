@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/">
+        <file>content/AddOption.ui.qml</file>
+        <file>content/App.qml</file>
+        <file>content/Cal.qml</file>
+        <file>content/CalendarButtons.ui.qml</file>
+        <file>content/CreateEvent.ui.qml</file>
+        <file>content/DefaultEvents.qml</file>
+        <file>content/ErrorMessage.ui.qml</file>
+        <file>content/InputText.ui.qml</file>
+        <file>content/Main_Menu.ui.qml</file>
+        <file>content/MenuButton.ui.qml</file>
+        <file>content/Prompt.ui.qml</file>
+        <file>content/SButton.ui.qml</file>
+        <file>content/SliderMenu.ui.qml</file>
+        <file>content/images/addthem.png</file>
+        <file>content/images/button_exit-app (1).png</file>
+        <file>content/images/button_exit-app.png</file>
+        <file>content/images/button_start-planning (1).png</file>
+        <file>content/images/button_start-planning.png</file>
+        <file>content/images/createimage1.png</file>
+        <file>content/images/createimage2.png</file>
+        <file>content/images/createimage3.png</file>
+        <file>content/images/createimage4.png</file>
+        <file>content/images/DropDown.png</file>
+        <file>content/images/hopefully.png</file>
+        <file>content/images/logo-black.png</file>
+        <file>content/images/logo-color.png</file>
+        <file>content/images/logo-no-background.png</file>
+        <file>content/images/logo-white.png</file>
+        <file>content/images/plus-icon.png</file>
+        <file>content/images/testrun.webp</file>
+        <file>content/images/treelines.png</file>
+        <file>content/fonts/fonts.txt</file>
+        <file>asset_imports/asset_imports.txt</file>
+    </qresource>
+</RCC>

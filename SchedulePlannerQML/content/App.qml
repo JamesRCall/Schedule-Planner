@@ -3,7 +3,6 @@
 
 import QtQuick 6.2
 import QtQuick.Window 6.2
-import UntitledProject
 
 Window {
     width: mainScreen.width

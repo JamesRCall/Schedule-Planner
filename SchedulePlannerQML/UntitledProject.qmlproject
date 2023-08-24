@@ -21,7 +21,7 @@ Project {
     }
 
     ImageFiles {
-        directory: "content"
+        directory: "content/images"
     }
 
     ImageFiles {

@@ -6,18 +6,15 @@ Check out https://doc.qt.io/qtcreator/creator-quick-ui-forms.html for details on
 */
 import QtQuick 6.2
 import QtQuick.Controls 6.2
-import UntitledProject
 import QtQuick.Timeline 6.0
 import QtQuick3D.Helpers 6.4
-import QtQuick.Studio.Components 1.0
-import FlowView 6.0
 import Qt.labs.platform 1.1
 
 
 Rectangle {
     id: background
     width: 1920
-    height: Constants.height
+    height: 1080
     color: "#272727"
     state: "Opening"
     scale: 1
@@ -56,7 +53,9 @@ Rectangle {
 
         Connections {
             target: startPlanning
-            onClicked: background.state = "MainMenu"
+            function onClicked() {
+                background.state = "MainMenu"
+            }
         }
     }
 
@@ -71,7 +70,9 @@ Rectangle {
 
         Connections {
             target: exitApp
-            onClicked: background.state = "Opening"
+            function onClicked() {
+                background.state = "Opening"
+            }
         }
     }
 
@@ -82,7 +83,9 @@ Rectangle {
 
         Connections {
             target: addOption
-            onClicked: background.state = "addEventPanel"
+            function onClicked() {
+                background.state = "addEventPanel"
+            }
         }
     }
 
@@ -111,7 +114,9 @@ Rectangle {
                     opacity: 0.2
                     Connections {
                         target: sliderButton
-                        onClicked: background.state = "CreateEvent"
+                        function onClicked() {
+                            background.state = "CreateEvent"
+                        }
                     }
                 }
 
@@ -180,28 +185,28 @@ Rectangle {
                 name: "Hone Health"
                 positionx: 15
                 positiony: 550
-                imagesource: "images/createimage1.webp"
+                imagesource: "images/createimage1.png"
             }
 
             ListElement {
                 name: "Get Goals"
                 positionx: 15
                 positiony: 550
-                imagesource: "images/createimage2.webp"
+                imagesource: "images/createimage2.png"
             }
 
             ListElement {
                 name: "Event Entry"
                 positionx: 15
                 positiony: 550
-                imagesource: "images/createimage3.webp"
+                imagesource: "images/createimage3.png"
             }
 
             ListElement {
                 name: "Ai Add"
                 positionx: 15
                 positiony: 550
-                imagesource: "images/createimage4.webp"
+                imagesource: "images/createimage4.png"
             }
         }
     }
@@ -213,7 +218,7 @@ Rectangle {
         width: 1393
         height: 945
         opacity: 0.107
-        source: "images/hopefully.webp"
+        source: "images/hopefully.png"
         fillMode: Image.PreserveAspectFit
     }
 
@@ -512,7 +517,7 @@ Rectangle {
 
         Connections {
             target: goBackButton
-            onClicked: {
+            function onClicked() {
                 cal.populateMonthListModel(cal.month, cal.year);
                 background.state = "MainMenu"
             }
@@ -561,7 +566,7 @@ Rectangle {
 
         Connections {
             target: createEvent
-            onClicked: {
+            function onClicked() {
                 if (eventName.text !== "" && eventTypeDropDown.currentIndex !== -1 && eventDescription.text !== "") {
 
                 // Get the selected event type from the ComboBox
@@ -628,7 +633,7 @@ Rectangle {
 
         Connections {
             target: createTestEvent
-            onClicked: {
+            function onClicked() {
                 var testEventName = "July 4th Test Event";
                 var testEventType = "Festive";
                 var testEventDescription = "A test event for Independence Day.";
@@ -653,7 +658,7 @@ Rectangle {
 
         Connections {
             target: testButton
-            onClicked: {
+            function onClicked() {
                 console.log("eventListModel:", cal.eventListModel);
                 console.log("filteredEventModel:", cal.filteredEventModel);
                 cal.logListModel(cal.eventListModel);
@@ -1319,7 +1324,7 @@ Rectangle {
             y: 16
             font.pointSize: 15
             Connections {
-                onClicked: {
+                function onClicked() {
                     cal.month = (cal.month > 0) ? cal.month - 1 : (cal.month == 0 ) ? (cal.year--, 11) : cal.month;
                     cal.populateMonthListModel(cal.month, cal.year)
                 }
@@ -1332,7 +1337,7 @@ Rectangle {
             x: 875
             y: 16
             Connections {
-                onClicked: {
+                function onClicked() {
                     cal.month = (cal.month < 11) ? cal.month + 1 : (cal.month == 11) ? (cal.year++, 0) : cal.month;
                     cal.populateMonthListModel(cal.month, cal.year)
                 }
@@ -1523,13 +1528,13 @@ Rectangle {
 
                     Connections {
                         target: dayButton
-                        onClicked: {
+                        function onClicked() {
                             cal.targetDay = modelData - cal.dayOfWeek + 1;
-                            cal.targetmonthName = cal.monthName
+                            cal.targetmonthName = cal.monthName;
 
                             cal.filterEventsByDate(cal.year, cal.month, cal.targetDay);
-                            console.log(dayButton.buttonDay)
-                            console.log(cal.day)
+                            console.log(dayButton.buttonDay);
+                            console.log(cal.day);
                         }
                     }
                 }

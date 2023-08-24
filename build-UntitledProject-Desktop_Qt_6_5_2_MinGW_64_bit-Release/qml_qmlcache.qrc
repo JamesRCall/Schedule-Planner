@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="content/AddOption.ui.qml">../SchedulePlannerQML/content/AddOption.ui.qml</file>
+        <file alias="content/App.qml">../SchedulePlannerQML/content/App.qml</file>
+        <file alias="content/Cal.qml">../SchedulePlannerQML/content/Cal.qml</file>
+        <file alias="content/CalendarButtons.ui.qml">../SchedulePlannerQML/content/CalendarButtons.ui.qml</file>
+        <file alias="content/CreateEvent.ui.qml">../SchedulePlannerQML/content/CreateEvent.ui.qml</file>
+        <file alias="content/DefaultEvents.qml">../SchedulePlannerQML/content/DefaultEvents.qml</file>
+        <file alias="content/ErrorMessage.ui.qml">../SchedulePlannerQML/content/ErrorMessage.ui.qml</file>
+        <file alias="content/InputText.ui.qml">../SchedulePlannerQML/content/InputText.ui.qml</file>
+        <file alias="content/Main_Menu.ui.qml">../SchedulePlannerQML/content/Main_Menu.ui.qml</file>
+        <file alias="content/MenuButton.ui.qml">../SchedulePlannerQML/content/MenuButton.ui.qml</file>
+        <file alias="content/Prompt.ui.qml">../SchedulePlannerQML/content/Prompt.ui.qml</file>
+        <file alias="content/SButton.ui.qml">../SchedulePlannerQML/content/SButton.ui.qml</file>
+        <file alias="content/SliderMenu.ui.qml">../SchedulePlannerQML/content/SliderMenu.ui.qml</file>
+        <file alias="content/images/addthem.png">../SchedulePlannerQML/content/images/addthem.png</file>
+        <file alias="content/images/button_exit-app (1).png">../SchedulePlannerQML/content/images/button_exit-app (1).png</file>
+        <file alias="content/images/button_exit-app.png">../SchedulePlannerQML/content/images/button_exit-app.png</file>
+        <file alias="content/images/button_start-planning (1).png">../SchedulePlannerQML/content/images/button_start-planning (1).png</file>
+        <file alias="content/images/button_start-planning.png">../SchedulePlannerQML/content/images/button_start-planning.png</file>
+        <file alias="content/images/createimage1.png">../SchedulePlannerQML/content/images/createimage1.png</file>
+        <file alias="content/images/createimage2.png">../SchedulePlannerQML/content/images/createimage2.png</file>
+        <file alias="content/images/createimage3.png">../SchedulePlannerQML/content/images/createimage3.png</file>
+        <file alias="content/images/createimage4.png">../SchedulePlannerQML/content/images/createimage4.png</file>
+        <file alias="content/images/DropDown.png">../SchedulePlannerQML/content/images/DropDown.png</file>
+        <file alias="content/images/hopefully.png">../SchedulePlannerQML/content/images/hopefully.png</file>
+        <file alias="content/images/logo-black.png">../SchedulePlannerQML/content/images/logo-black.png</file>
+        <file alias="content/images/logo-color.png">../SchedulePlannerQML/content/images/logo-color.png</file>
+        <file alias="content/images/logo-no-background.png">../SchedulePlannerQML/content/images/logo-no-background.png</file>
+        <file alias="content/images/logo-white.png">../SchedulePlannerQML/content/images/logo-white.png</file>
+        <file alias="content/images/plus-icon.png">../SchedulePlannerQML/content/images/plus-icon.png</file>
+        <file alias="content/images/testrun.webp">../SchedulePlannerQML/content/images/testrun.webp</file>
+        <file alias="content/images/treelines.png">../SchedulePlannerQML/content/images/treelines.png</file>
+        <file alias="content/fonts/fonts.txt">../SchedulePlannerQML/content/fonts/fonts.txt</file>
+        <file alias="asset_imports/asset_imports.txt">../SchedulePlannerQML/asset_imports/asset_imports.txt</file>
+    </qresource>
+</RCC>

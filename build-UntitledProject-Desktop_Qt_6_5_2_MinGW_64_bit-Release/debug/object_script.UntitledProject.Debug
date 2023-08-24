@@ -1,0 +1,16 @@
+debug/qrc_qml_qmlcache.o
+debug/main.o
+debug/content_Cal_qml.o
+debug/content_ErrorMessage.ui_qml.o
+debug/content_CalendarButtons.ui_qml.o
+debug/content_App_qml.o
+debug/content_SliderMenu.ui_qml.o
+debug/content_DefaultEvents_qml.o
+debug/content_InputText.ui_qml.o
+debug/content_Prompt.ui_qml.o
+debug/content_AddOption.ui_qml.o
+debug/content_MenuButton.ui_qml.o
+debug/content_SButton.ui_qml.o
+debug/content_CreateEvent.ui_qml.o
+debug/content_Main_Menu.ui_qml.o
+debug/qmlcache_loader.o

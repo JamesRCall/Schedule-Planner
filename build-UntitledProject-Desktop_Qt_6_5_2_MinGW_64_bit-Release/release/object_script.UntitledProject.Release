@@ -1,0 +1,16 @@
+release/qrc_qml_qmlcache.o
+release/main.o
+release/content_Cal_qml.o
+release/content_ErrorMessage.ui_qml.o
+release/content_CalendarButtons.ui_qml.o
+release/content_App_qml.o
+release/content_SliderMenu.ui_qml.o
+release/content_DefaultEvents_qml.o
+release/content_InputText.ui_qml.o
+release/content_Prompt.ui_qml.o
+release/content_AddOption.ui_qml.o
+release/content_MenuButton.ui_qml.o
+release/content_SButton.ui_qml.o
+release/content_CreateEvent.ui_qml.o
+release/content_Main_Menu.ui_qml.o
+release/qmlcache_loader.o

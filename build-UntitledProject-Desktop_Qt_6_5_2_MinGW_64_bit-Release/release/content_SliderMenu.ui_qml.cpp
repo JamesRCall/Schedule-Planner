@@ -1423,8 +1423,8 @@ Q_UNUSED(aotContext)
 Q_UNUSED(argumentsPtr)
 // expression for onFinished at line 40, column 17
 QObject *r7_1;
-QObject *r2_1;
 QString r2_2;
+QObject *r2_1;
 // generate_CreateCallContext
 {
 // generate_LoadQmlContextPropertyLookup

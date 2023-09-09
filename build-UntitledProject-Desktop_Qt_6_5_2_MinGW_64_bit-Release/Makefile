@@ -357,6 +357,7 @@ Makefile: ../../SchedulePlannerQML/UntitledProject.pro C:/Qt/6.5.2/mingw_64/mksp
 		C:/Qt/6.5.2/mingw_64/lib/Qt6QmlModels.prl \
 		C:/Qt/6.5.2/mingw_64/lib/Qt6Qml.prl \
 		C:/Qt/6.5.2/mingw_64/lib/Qt6Network.prl \
+		C:/Qt/6.5.2/mingw_64/lib/Qt6Sql.prl \
 		C:/Qt/6.5.2/mingw_64/lib/Qt6Core.prl \
 		C:/Qt/6.5.2/mingw_64/lib/Qt6EntryPoint.prl \
 		.qmake.stash \
@@ -650,6 +651,7 @@ C:/Qt/6.5.2/mingw_64/lib/Qt6Gui.prl:
 C:/Qt/6.5.2/mingw_64/lib/Qt6QmlModels.prl:
 C:/Qt/6.5.2/mingw_64/lib/Qt6Qml.prl:
 C:/Qt/6.5.2/mingw_64/lib/Qt6Network.prl:
+C:/Qt/6.5.2/mingw_64/lib/Qt6Sql.prl:
 C:/Qt/6.5.2/mingw_64/lib/Qt6Core.prl:
 C:/Qt/6.5.2/mingw_64/lib/Qt6EntryPoint.prl:
 .qmake.stash:

@@ -1,5 +1,6 @@
 debug/qrc_qml_qmlcache.o
 debug/main.o
+debug/databasemanager.o
 debug/content_Cal_qml.o
 debug/content_ErrorMessage.ui_qml.o
 debug/content_CalendarButtons.ui_qml.o
@@ -14,3 +15,4 @@ debug/content_SButton.ui_qml.o
 debug/content_CreateEvent.ui_qml.o
 debug/content_Main_Menu.ui_qml.o
 debug/qmlcache_loader.o
+debug/moc_databasemanager.o

@@ -845,8 +845,8 @@ extern const QQmlPrivate::TypedFunction aotBuiltFunctions[] = {
 Q_UNUSED(aotContext)
 Q_UNUSED(argumentsPtr)
 // expression for opacity at line 33, column 9
-bool r2_1;
 double r2_2;
+bool r2_1;
 // generate_LoadQmlContextPropertyLookup
 while (!aotContext->loadScopeObjectPropertyLookup(20, &r2_1)) {
 aotContext->setInstructionPointer(2);
@@ -879,8 +879,8 @@ return r2_2;
 Q_UNUSED(aotContext)
 Q_UNUSED(argumentsPtr)
 // expression for opacity at line 43, column 9
-bool r2_1;
 double r2_2;
+bool r2_1;
 // generate_LoadQmlContextPropertyLookup
 while (!aotContext->loadScopeObjectPropertyLookup(23, &r2_1)) {
 aotContext->setInstructionPointer(2);
